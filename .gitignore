@@ -1,1 +1,4 @@
 *.geojson
+data/*
+*.png
+*.pyc
