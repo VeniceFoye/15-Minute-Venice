@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 from affine import Affine
 import geopandas as gpd
-import matplotlib.pyplot as plt   # only for colour cycle
+import matplotlib.pyplot as plt   # only for color cycle
 
 
 
@@ -29,7 +29,7 @@ def grid_to_image(
     scale : int, default 1
         How many output pixels per cell (must be ≥1). 2 doubles width/height.
     palette : {state: (R, G, B)}, optional
-        Custom colours.  Unspecified states default to white.
+        Custom colors.  Unspecified states default to white.
 
     Returns
     -------
@@ -43,7 +43,7 @@ def grid_to_image(
     if scale < 1 or not isinstance(scale, int):
         raise ValueError("scale must be a positive integer")
 
-    # ---------- default colour map ------------------------------------
+    # ---------- default color map ------------------------------------
     default_palette = {
         0: (173, 216, 230),   # ocean – light blue
         1: (190, 190, 190),   # street – light grey
@@ -57,8 +57,8 @@ def grid_to_image(
     rows, cols = grid.shape
     rgb = np.zeros((rows, cols, 3), dtype=np.uint8)
 
-    for state, colour in default_palette.items():
-        rgb[grid == state] = colour
+    for state, color in default_palette.items():
+        rgb[grid == state] = color
 
     img = Image.fromarray(rgb, mode="RGB")
 
@@ -88,20 +88,20 @@ def grid_with_pois_image(
     scale: int = 1,
     palette: dict[int, tuple[int, int, int]] | None = None,
     function_col: str = "PP_Function_TOP",
-    colour_map: dict[str, tuple[int, int, int]] | None = None,
-    default_colour: tuple[int, int, int] = (0, 0, 0),
+    color_map: dict[str, tuple[int, int, int]] | None = None,
+    default_color: tuple[int, int, int] = (0, 0, 0),
     poi_radius: int | None = None,
 ) -> Image.Image:
     """
-    Render the grid and overlay POIs coloured by `function_col`.
+    Render the grid and overlay POIs colored by `function_col`.
 
     Parameters
     ----------
     function_col : str
-        Column in poi_gdf to drive the colour mapping.
-    colour_map : dict {category: (R,G,B)}
+        Column in poi_gdf to drive the color mapping.
+    color_map : dict {category: (R,G,B)}
         Pass your own mapping.  If None, a palette is generated.
-    default_colour : RGB
+    default_color : RGB
         Used for categories that appear after the mapping is built (rare).
     """
     img = grid_to_image(grid, scale=scale, palette=palette)
@@ -109,24 +109,24 @@ def grid_with_pois_image(
     R = poi_radius if poi_radius is not None else max(1, scale // 2)
 
     # ------------------------------------------------------------------
-    # build or validate category → colour dict
+    # build or validate category → color dict
     # ------------------------------------------------------------------
     cats = poi_gdf[function_col].fillna("UNKNOWN").astype(str)
-    if colour_map is None:
-        base_cycle = plt.cm.get_cmap("tab20").colors   # 20 distinct colours
-        colour_map = {cat: tuple(int(255*c) for c in base_cycle[i % 20])
+    if color_map is None:
+        base_cycle = plt.cm.get_cmap("tab20").colors   # 20 distinct colors
+        color_map = {cat: tuple(int(255*c) for c in base_cycle[i % 20])
                       for i, cat in enumerate(sorted(cats.unique()))}
     else:
         # ensure RGB ints 0-255
-        colour_map = {k: tuple(int(x) for x in v) for k, v in colour_map.items()}
+        color_map = {k: tuple(int(x) for x in v) for k, v in color_map.items()}
 
     # ------------------------------------------------------------------
     # draw dots
     # ------------------------------------------------------------------
     for r, c, cat in zip(poi_gdf["row"], poi_gdf["col"], cats):
-        colour = colour_map.get(cat, default_colour)
+        color = color_map.get(cat, default_color)
         x = c * scale + scale // 2
         y = r * scale + scale // 2
-        draw.ellipse((x - R, y - R, x + R, y + R), fill=colour)
+        draw.ellipse((x - R, y - R, x + R, y + R), fill=color)
 
     return img
