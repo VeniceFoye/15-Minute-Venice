@@ -2,3 +2,5 @@
 data/*
 *.png
 *.pyc
+*.npz
+*.npy
