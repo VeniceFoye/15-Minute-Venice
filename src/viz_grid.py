@@ -25,7 +25,7 @@ def grid_to_image(
     Parameters
     ----------
     grid : ndarray[int]   shape (rows, cols)
-        Cell codes: 0=ocean, 1=street, 2=building (extend as you wish).
+        Cell codes: 0=canals, 1=street, 2=building (extend as you wish).
     scale : int, default 1
         How many output pixels per cell (must be ≥1). 2 doubles width/height.
     palette : {state: (R, G, B)}, optional
@@ -45,7 +45,7 @@ def grid_to_image(
 
     # ---------- default color map ------------------------------------
     default_palette = {
-        0: (173, 216, 230),   # ocean – light blue
+        0: (173, 216, 230),   # canals – light blue
         1: (190, 190, 190),   # street – light grey
         2: (178,  34,  34),   # building – dark red
         3: ( 64, 224, 208),   # canal – turquoise

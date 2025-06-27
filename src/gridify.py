@@ -1,7 +1,7 @@
 """
 gridify.py – rasterise Venice-style layers into a NumPy grid
 State codes:
-    0 = ocean   (background)
+    0 = canals   (background)
     1 = street
     2 = building      (overrides anything beneath)
     3 = canal         (overrides street, but is under buildings)
@@ -38,7 +38,7 @@ def gdfs_to_grid(
     Rasterise buildings, streets, (optionally) canals to a numpy grid.
 
     Override order (lowest → highest priority)
-        0  ocean   (implicit background)
+        0  canals   (implicit background)
         1  street
         3  canal
         2  building
@@ -76,7 +76,7 @@ def gdfs_to_grid(
     transform = Affine(cell_size, 0, minx,
                        0, -cell_size, maxy)
 
-    grid = np.zeros((rows, cols), dtype=np.uint8)        # 0 = ocean
+    grid = np.zeros((rows, cols), dtype=np.uint8)        # 0 = canals
 
 
     if canals is not None:
@@ -88,7 +88,7 @@ def gdfs_to_grid(
     _burn_geoms(streets.geometry, 1, grid, transform)
     
 
-    legend = {0: "ocean", 1: "street", 2: "building", 3: "canal"}
+    legend = {0: "canals", 1: "street", 2: "building", 3: "canal"}
     return grid, transform, legend
 
 
@@ -139,7 +139,7 @@ def add_courtyards_fast(grid: np.ndarray,
 
     # ---- anything empty *and* not connected → courtyard --------------------
     grid[mask & ~connected] = courtyard_code
-    legend = {0: "ocean", 1: "street", 2: "building", 3: "canal", 4: "courtyard"}
+    legend = {0: "canals", 1: "street", 2: "building", 3: "canal", 4: "courtyard"}
     return grid, legend
 
 def pois_to_grid_coords(

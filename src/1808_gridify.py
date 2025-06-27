@@ -11,7 +11,7 @@ plus the earlier grid helpers:
 
 State codes used in the resulting grid
 --------------------------------------
-0 ocean/background
+0 canals/background
 1 street
 2 building (incl. sottoportico)
 3 canal / lagoon

@@ -58,7 +58,7 @@ def path_from_poi(
             elif cell == COURTYARD_CODE:
                 step_cost = base_cost * COST_COURTYARD / COST_STREET
             else:
-                continue  # blocked (building, canal, ocean…)
+                continue  # blocked (building, canal, canals…)
 
             ng = g_cur + step_cost
             if ng < g_score.get((nr, nc), 1e30):
