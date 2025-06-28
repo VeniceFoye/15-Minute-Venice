@@ -188,3 +188,101 @@ def path_on_grid_image(
         draw.ellipse((x - R, y - R, x + R, y + R), fill=poi_colour)
 
     return img
+
+# ---------------------------------------------------------------------
+#  combined – grid + many POIs + a path  (all in one PIL.Image)
+# ---------------------------------------------------------------------
+from PIL import ImageDraw
+import matplotlib.pyplot as plt         # only for tab20 colours
+
+def grid_pois_and_path_image(
+    grid: np.ndarray,
+    transform,                                  # unused – keeps API symmetric
+    poi_gdf: gpd.GeoDataFrame,
+    path_r: np.ndarray,
+    path_c: np.ndarray,
+    *,
+    # grid
+    scale: int = 5,
+    palette: dict[int, tuple[int, int, int]] | None = None,
+    bg_alpha: float = 1.0,          # ⬅️  1 = full, 0.5 = 50 % faded, …
+    # POIs
+    function_col: str = "PP_Function_TOP",
+    color_map: dict[str, tuple[int, int, int]] | None = None,
+    default_color: tuple[int, int, int] = (0, 0, 0),
+    poi_radius: int | None = None,
+    # path
+    path_colour: tuple[int, int, int] = (255, 215, 0),
+    path_width: int | None = None,
+    # emphasis dots
+    poi_start: tuple[int, int] | None = None,
+    poi_end:   tuple[int, int] | None = None,
+    poi_dot_colour: tuple[int, int, int] = (0, 0, 0),
+) -> Image.Image:
+    """
+    Render land-use grid, POI dots, and a path polyline.
+
+    Parameters
+    ----------
+    bg_alpha : float
+        1 → original grid colours,  
+        0 → completely white; values in between fade the background.
+
+    Returns
+    -------
+    PIL.Image.Image
+    """
+    # ------------------------------------------------------------------
+    # 0 | base land-use raster (RGB)
+    # ------------------------------------------------------------------
+    base = grid_to_image(grid, scale=scale, palette=palette)
+
+    if not (0 < bg_alpha <= 1):
+        raise ValueError("bg_alpha must be in (0, 1].")
+
+    if bg_alpha < 1:                     # dim → blend with white
+        white = Image.new("RGB", base.size, (255, 255, 255))
+        base  = Image.blend(base, white, 1 - bg_alpha)
+
+    draw = ImageDraw.Draw(base)
+
+    # ------------------------------------------------------------------
+    # 1 | path polyline (draw *before* POI dots so dots sit on top)
+    # ------------------------------------------------------------------
+    w = path_width if path_width is not None else max(1, scale // 2)
+    if len(path_r):
+        pts = [(c*scale + scale//2, r*scale + scale//2)
+               for r, c in zip(path_r, path_c)]
+        draw.line(pts, fill=path_colour, width=w, joint="curve")
+
+    # optional emphasised start/end dots
+    Rdot = max(2, w + 1)
+    for cell in (poi_start, poi_end):
+        if cell is not None:
+            x = cell[1]*scale + scale//2
+            y = cell[0]*scale + scale//2
+            draw.ellipse((x-Rdot, y-Rdot, x+Rdot, y+Rdot),
+                         fill=poi_dot_colour)
+
+    # ------------------------------------------------------------------
+    # 2 | category → colour map (same logic as before)
+    # ------------------------------------------------------------------
+    cats = poi_gdf[function_col].fillna("UNKNOWN").astype(str)
+    if color_map is None:
+        base_cycle = plt.cm.get_cmap("tab20").colors
+        color_map = {cat: tuple(int(255*c) for c in base_cycle[i % 20])
+                     for i, cat in enumerate(sorted(cats.unique()))}
+    else:
+        color_map = {k: tuple(int(x) for x in v) for k, v in color_map.items()}
+
+    # ------------------------------------------------------------------
+    # 3 | draw POI dots on top
+    # ------------------------------------------------------------------
+    R = poi_radius if poi_radius is not None else max(1, scale // 2)
+    for r, c, cat in zip(poi_gdf["row"], poi_gdf["col"], cats):
+        colour = color_map.get(cat, default_color)
+        x = c*scale + scale//2
+        y = r*scale + scale//2
+        draw.ellipse((x-R, y-R, x+R, y+R), fill=colour)
+
+    return base

@@ -3,8 +3,9 @@ gridify.py – rasterise Venice-style layers into a NumPy grid
 State codes:
     0 = ocean   (background)
     1 = street
-    2 = building      (overrides anything beneath)
-    3 = canal         (overrides street, but is under buildings)
+    2 = building      
+    3 = canal         
+    4 = courtyard
 """
 
 from __future__ import annotations
