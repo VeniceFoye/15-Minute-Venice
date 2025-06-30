@@ -5,3 +5,10 @@ data/*
 *.npz
 *.npy
 *.feather
+*.csv
+*.gif
+*.zip
+*.tsv
+15-Minute-Venice-Data/*
+*.Identifier
+*.mp4

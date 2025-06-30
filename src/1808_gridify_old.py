@@ -24,7 +24,7 @@ import numpy as np
 from affine import Affine
 from rasterio import features
 
-from gridify import gdfs_to_grid, add_courtyards_fast
+from gridify_old import gdfs_to_grid, add_courtyards_fast
 
 
 def load_sommarioni_layers(

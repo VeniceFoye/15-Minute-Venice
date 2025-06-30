@@ -17,7 +17,7 @@ import geopandas as gpd
 from tqdm import tqdm
 
 from src_cpp.path_planner import path_from_poi          # C++ A*
-from src.sample_pois     import pois_within_radius      # <- if you still need it
+from sample_pois_old     import pois_within_radius      # <- if you still need it
 
 # ------------------------------- config -----------------------------------
 GRID_PATH     = "cpp_data/grid.npy"

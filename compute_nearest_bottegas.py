@@ -14,7 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import multiprocessing as mp
 
 from src_cpp.path_planner import path_from_poi
-from src.sample_pois    import pois_within_radius
+from sample_pois_old    import pois_within_radius
 
 GRID_PATH   = "cpp_data/grid.npy"
 POI_PATH    = "pois/catastaci_adjusted.geojson"
