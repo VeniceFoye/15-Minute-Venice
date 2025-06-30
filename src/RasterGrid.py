@@ -6,7 +6,7 @@ from typing import Dict
 from utils.grid_utils import instantiate_grid_and_transform, rasterize_geoms
 from utils.courtyard_utils import add_auto_courtyards
 
-DEFAULT_VENICE_LEGEND = {"ocean" : 0, "street" : 1, "building" : 2, "canal" : 3, "courtyard" : 4}
+# DEFAULT_VENICE_LEGEND = {"ocean" : 0, "street" : 1, "building" : 2, "canal" : 3, "courtyard" : 4}
 
 class RasterGrid:
     """
@@ -63,7 +63,7 @@ class RasterGrid:
         auto_courtyards : bool = True,
         coordinate_reference_system: str = "EPSG:32633",
         cell_size: float = 1,
-        legend : Dict[str, int] = DEFAULT_VENICE_LEGEND
+        legend : Dict[str, int] = {"ocean" : 0, "street" : 1, "building" : 2, "canal" : 3, "courtyard" : 4}
     ):
         """
         Rasterize buildings, streets, and canals of Venice into a RasterGrid.
@@ -93,14 +93,13 @@ class RasterGrid:
         new_raster_grid.legend = legend
 
         # Check that all the GeoDataFrames are in the same, and correct CRS
-        layers = [g for g in (buildings, streets, canals) if g is not None]
-        LAYER_INDEXES_TO_NAMES = {0 : "Buildings", 1: "Streets", 2: "Canals"}
+        layers = [g for g in (buildings, streets, canals, courtyards) if g is not None]
+        LAYER_INDEXES_TO_NAMES = {0 : "Buildings", 1: "Streets", 2: "Canals", 3: "Courtyards"}
 
         for i, current_layer in enumerate(layers):
             if current_layer.crs != coordinate_reference_system:
                 print(f"WARNING! {LAYER_INDEXES_TO_NAMES[i]} layer not in {coordinate_reference_system}. Converting now.")
-                current_layer.to_crs(coordinate_reference_system)
-
+                layers[i] = current_layer.to_crs(coordinate_reference_system)
         # Create the grid
         grid, transform = instantiate_grid_and_transform(cell_size, layers, default_grid_value = legend["ocean"])
 
@@ -108,14 +107,14 @@ class RasterGrid:
         new_raster_grid.transform = transform
 
         # Rasterize the Canals, Buildings, and then Streets
-        rasterize_geoms(canals.geometry, legend['canal'], grid, transform)
-        rasterize_geoms(buildings.geometry, legend['building'], grid, transform)
-        rasterize_geoms(streets.geometry, legend['street'], grid, transform)
+        rasterize_geoms(layers[2].geometry, legend['canal'], grid, transform)
+        rasterize_geoms(layers[0].geometry, legend['building'], grid, transform)
+        rasterize_geoms(layers[1].geometry, legend['street'], grid, transform)
 
         # See if courtyards exist
         if courtyards is not None:
             # Add couryards
-            rasterize_geoms(courtyards.geometry, legend['courtyard'], grid, transform)
+            rasterize_geoms(layers[3].geometry, legend['courtyard'], grid, transform)
         else:
             print("No manual courtyards found.")
 
@@ -127,3 +126,27 @@ class RasterGrid:
         new_raster_grid.grid = grid
 
         return new_raster_grid
+
+
+
+    def save(self, filepath : str):
+        """
+        Save a RasterGrid to a .npz file.
+        """
+        np.savez_compressed(file=filepath, grid=self.grid, transform=self.transform, legend=self.legend, cell_size=self.cell_size, coordinate_reference_system=self.coordinate_reference_system)
+
+    @classmethod
+    def load(cls, filepath):
+        """
+        Create a RasterGrid object from a .npz compressed file.
+        """
+        npz_grid = np.load(filepath)
+
+        new_raster_grid = RasterGrid(coordinate_reference_system=npz_grid['coordinate_reference_system'], cell_size=npz_grid['cell_size'])
+
+        new_raster_grid.grid = npz_grid['grid']
+        new_raster_grid.transform = npz_grid['transform']
+        new_raster_grid.legend = npz_grid['legend']
+
+        return new_raster_grid
+
