@@ -113,7 +113,7 @@ class RasterGrid:
         rasterize_geoms(streets.geometry, legend['street'], grid, transform)
 
         # See if courtyards exist
-        if courtyards != None:
+        if courtyards is not None:
             # Add couryards
             rasterize_geoms(courtyards.geometry, legend['courtyard'], grid, transform)
         else:
