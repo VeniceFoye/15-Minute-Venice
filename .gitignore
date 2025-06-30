@@ -12,3 +12,5 @@ data/*
 15-Minute-Venice-Data/*
 *.Identifier
 *.mp4
+settings.json
+*.so

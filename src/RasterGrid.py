@@ -4,9 +4,9 @@ import geopandas as gpd
 from typing import Dict
 
 from utils.grid_utils import instantiate_grid_and_transform, rasterize_geoms
+from utils.courtyard_utils import add_auto_courtyards
 
-
-DEFAULT_VENICE_LEGEND = {"ocean" : 0, "street" : 1, "building" : 2, "canal" :3}
+DEFAULT_VENICE_LEGEND = {"ocean" : 0, "street" : 1, "building" : 2, "canal" : 3, "courtyard" : 4}
 
 class RasterGrid:
     """
@@ -59,6 +59,8 @@ class RasterGrid:
         streets: gpd.GeoDataFrame,
         canals: gpd.GeoDataFrame,
         *,
+        courtyards : gpd.GeoDataFrame = None,
+        auto_courtyards : bool = True,
         coordinate_reference_system: str = "EPSG:32633",
         cell_size: float = 1,
         legend : Dict[str, int] = DEFAULT_VENICE_LEGEND
@@ -110,6 +112,17 @@ class RasterGrid:
         rasterize_geoms(buildings.geometry, legend['building'], grid, transform)
         rasterize_geoms(streets.geometry, legend['street'], grid, transform)
 
+        # See if courtyards exist
+        if courtyards != None:
+            # Add couryards
+            rasterize_geoms(courtyards.geometry, legend['courtyard'], grid, transform)
+        else:
+            print("No manual courtyards found.")
+
+        if auto_courtyards:
+            print("Adding automatic courtyards. . .")
+            grid = add_auto_courtyards(grid, empty_code=legend['ocean'], courtyard_code=legend['courtyard'])
+            
         # Assign the Filled-In Grid
         new_raster_grid.grid = grid
 
