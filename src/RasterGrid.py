@@ -1,7 +1,8 @@
 import numpy as np
 from affine import Affine
 import geopandas as gpd
-from typing import Dict
+from typing import Dict, Tuple
+from PIL import Image
 
 from utils.grid_utils import instantiate_grid_and_transform, rasterize_geoms
 from utils.courtyard_utils import add_auto_courtyards
@@ -127,7 +128,7 @@ class RasterGrid:
 
         return new_raster_grid
 
-
+    ## Saving and Loading
 
     def save(self, filepath : str):
         """
@@ -140,7 +141,7 @@ class RasterGrid:
         """
         Create a RasterGrid object from a .npz compressed file.
         """
-        npz_grid = np.load(filepath)
+        npz_grid = np.load(filepath, allow_pickle=True)
 
         new_raster_grid = RasterGrid(coordinate_reference_system=npz_grid['coordinate_reference_system'], cell_size=npz_grid['cell_size'])
 
@@ -150,3 +151,57 @@ class RasterGrid:
 
         return new_raster_grid
 
+
+    ## Visualization Functions
+    def to_image(
+        self,
+        scale: int = 1,
+        palette: Dict[int, Tuple[int, int, int]] | None = None,
+    ) -> Image.Image:
+        """
+        Convert a uint8 grid of states into a PIL Image.
+
+        Parameters
+        ----------
+        grid : ndarray[int]   shape (rows, cols)
+            Cell codes: 0=ocean, 1=street, 2=building (extend as you wish).
+        scale : int, default 1
+            How many output pixels per cell (must be ≥1). 2 doubles width/height.
+        palette : {state: (R, G, B)}, optional
+            Custom colors.  Unspecified states default to white.
+
+        Returns
+        -------
+        PIL.Image.Image  (mode "RGB")
+
+        Notes
+        -----
+        * Uses pure NumPy → very fast, even for multi-million-cell grids.
+        * Nearest-neighbour up-scaling keeps the crisp blocky CA look.
+        """
+        if scale < 1 or not isinstance(scale, int):
+            raise ValueError("scale must be a positive integer")
+
+        # ---------- default color map ------------------------------------
+        default_palette = {
+            0: (173, 216, 230),   # ocean – light blue
+            1: (190, 190, 190),   # street – light grey
+            2: (178,  34,  34),   # building – dark red
+            3: ( 64, 224, 208),   # canal – turquoise
+            4: (152, 251, 152),   # courtyard – pale green
+        }
+        if palette is not None:
+            default_palette.update(palette)
+
+        rows, cols = self.grid.shape
+        rgb = np.zeros((rows, cols, 3), dtype=np.uint8)
+
+        for state, color in default_palette.items():
+            rgb[self.grid == state] = color
+
+        img = Image.fromarray(rgb, mode="RGB")
+
+        if scale > 1:
+            img = img.resize((cols * scale, rows * scale), resample=Image.Resampling.NEAREST)
+
+        return img
