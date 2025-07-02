@@ -143,11 +143,25 @@ class RasterGrid:
         """
         npz_grid = np.load(filepath, allow_pickle=True)
 
-        new_raster_grid = RasterGrid(coordinate_reference_system=npz_grid['coordinate_reference_system'], cell_size=npz_grid['cell_size'])
+        crs      = npz_grid["coordinate_reference_system"]
+        cellsize = npz_grid["cell_size"]
+
+        crs      = crs.item()      if isinstance(crs, np.ndarray) else crs
+        cellsize = cellsize.item() if isinstance(cellsize, np.ndarray) else cellsize
+
+        new_raster_grid = RasterGrid(coordinate_reference_system=crs, cell_size=cellsize)
 
         new_raster_grid.grid = npz_grid['grid']
-        new_raster_grid.transform = npz_grid['transform']
-        new_raster_grid.legend = npz_grid['legend']
+
+        transform      = npz_grid["transform"]
+        legend = npz_grid["legend"]
+
+        transform      = Affine(*transform)      if isinstance(transform, np.ndarray) else transform
+        legend = legend.item() if isinstance(legend, np.ndarray) else legend
+
+
+        new_raster_grid.transform = transform
+        new_raster_grid.legend = legend
 
         return new_raster_grid
 
