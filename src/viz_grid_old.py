@@ -8,56 +8,56 @@ import geopandas as gpd
 import matplotlib.pyplot as plt   # only for color cycle
 
 
-def grid_with_pois_image(
-    grid: np.ndarray,
-    transform: Affine,
-    poi_gdf: gpd.GeoDataFrame,
-    *,
-    scale: int = 1,
-    palette: dict[int, tuple[int, int, int]] | None = None,
-    function_col: str = "PP_Function_TOP",
-    color_map: dict[str, tuple[int, int, int]] | None = None,
-    default_color: tuple[int, int, int] = (0, 0, 0),
-    poi_radius: int | None = None,
-) -> Image.Image:
-    """
-    Render the grid and overlay POIs colored by `function_col`.
+# def grid_with_pois_image(
+#     grid: np.ndarray,
+#     transform: Affine,
+#     poi_gdf: gpd.GeoDataFrame,
+#     *,
+#     scale: int = 1,
+#     palette: dict[int, tuple[int, int, int]] | None = None,
+#     function_col: str = "PP_Function_TOP",
+#     color_map: dict[str, tuple[int, int, int]] | None = None,
+#     default_color: tuple[int, int, int] = (0, 0, 0),
+#     poi_radius: int | None = None,
+# ) -> Image.Image:
+#     """
+#     Render the grid and overlay POIs colored by `function_col`.
 
-    Parameters
-    ----------
-    function_col : str
-        Column in poi_gdf to drive the color mapping.
-    color_map : dict {category: (R,G,B)}
-        Pass your own mapping.  If None, a palette is generated.
-    default_color : RGB
-        Used for categories that appear after the mapping is built (rare).
-    """
-    img = grid_to_image(grid, scale=scale, palette=palette)
-    draw = ImageDraw.Draw(img)
-    R = poi_radius if poi_radius is not None else max(1, scale // 2)
+#     Parameters
+#     ----------
+#     function_col : str
+#         Column in poi_gdf to drive the color mapping.
+#     color_map : dict {category: (R,G,B)}
+#         Pass your own mapping.  If None, a palette is generated.
+#     default_color : RGB
+#         Used for categories that appear after the mapping is built (rare).
+#     """
+#     img = grid_to_image(grid, scale=scale, palette=palette)
+#     draw = ImageDraw.Draw(img)
+#     R = poi_radius if poi_radius is not None else max(1, scale // 2)
 
-    # ------------------------------------------------------------------
-    # build or validate category → color dict
-    # ------------------------------------------------------------------
-    cats = poi_gdf[function_col].fillna("UNKNOWN").astype(str)
-    if color_map is None:
-        base_cycle = plt.cm.get_cmap("tab20").colors   # 20 distinct colors
-        color_map = {cat: tuple(int(255*c) for c in base_cycle[i % 20])
-                      for i, cat in enumerate(sorted(cats.unique()))}
-    else:
-        # ensure RGB ints 0-255
-        color_map = {k: tuple(int(x) for x in v) for k, v in color_map.items()}
+#     # ------------------------------------------------------------------
+#     # build or validate category → color dict
+#     # ------------------------------------------------------------------
+#     cats = poi_gdf[function_col].fillna("UNKNOWN").astype(str)
+#     if color_map is None:
+#         base_cycle = plt.cm.get_cmap("tab20").colors   # 20 distinct colors
+#         color_map = {cat: tuple(int(255*c) for c in base_cycle[i % 20])
+#                       for i, cat in enumerate(sorted(cats.unique()))}
+#     else:
+#         # ensure RGB ints 0-255
+#         color_map = {k: tuple(int(x) for x in v) for k, v in color_map.items()}
 
-    # ------------------------------------------------------------------
-    # draw dots
-    # ------------------------------------------------------------------
-    for r, c, cat in zip(poi_gdf["row"], poi_gdf["col"], cats):
-        color = color_map.get(cat, default_color)
-        x = c * scale + scale // 2
-        y = r * scale + scale // 2
-        draw.ellipse((x - R, y - R, x + R, y + R), fill=color)
+#     # ------------------------------------------------------------------
+#     # draw dots
+#     # ------------------------------------------------------------------
+#     for r, c, cat in zip(poi_gdf["row"], poi_gdf["col"], cats):
+#         color = color_map.get(cat, default_color)
+#         x = c * scale + scale // 2
+#         y = r * scale + scale // 2
+#         draw.ellipse((x - R, y - R, x + R, y + R), fill=color)
 
-    return img
+#     return img
 
 
 def path_on_grid_image(

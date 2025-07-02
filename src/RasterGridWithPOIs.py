@@ -7,6 +7,11 @@ from utils.poi_utils import pois_to_grid_coords
 from typing import Dict
 import numpy as np
 
+import matplotlib.pyplot as plt
+
+from PIL import Image, ImageDraw
+
+
 import os
 import sys
 
@@ -194,6 +199,48 @@ class RasterGridWithPOIs(RasterGrid):
         raster_grid = RasterGrid.load(npz_path)
 
         return cls.from_RasterGrid_and_POIs(raster_grid=raster_grid, POI_gdf=POI_gdf)
+
+
+    ####### Visualization Methods
+
+    def to_image_with_POIs(
+        self,
+        scale: int = 1,
+        palette: dict[int, tuple[int, int, int]] | None = None,
+        function_col: str = "PP_Function_TOP",
+        color_map: dict[str, tuple[int, int, int]] | None = None,
+        default_color: tuple[int, int, int] = (0, 0, 0),
+        poi_radius: int | None = None,
+    ):
+        # Get the image from the grid
+        img = super().to_image(scale=scale, palette=palette)
+
+        draw = ImageDraw.Draw(img)
+        poi_radius = poi_radius if poi_radius is not None else max(1, scale // 2)
+
+        # ------------------------------------------------------------------
+        # build or validate category → color dict
+        # ------------------------------------------------------------------
+        cats = self.POI_gdf[function_col].fillna("UNKNOWN").astype(str)
+        if color_map is None:
+            base_cycle = plt.cm.get_cmap("tab20").colors   # 20 distinct colors
+            color_map = {cat: tuple(int(255*c) for c in base_cycle[i % 20])
+                        for i, cat in enumerate(sorted(cats.unique()))}
+        else:
+            # ensure RGB ints 0-255
+            color_map = {k: tuple(int(x) for x in v) for k, v in color_map.items()}
+
+        # ------------------------------------------------------------------
+        # draw dots
+        # ------------------------------------------------------------------
+        for r, c, cat in zip(self.POI_gdf["row"], self.POI_gdf["col"], cats):
+            color = color_map.get(cat, default_color)
+            x = c * scale + scale // 2
+            y = r * scale + scale // 2
+            draw.ellipse((x - poi_radius, y - poi_radius, x + poi_radius, y + poi_radius), fill=color)
+
+        return img
+
 
     ####### Private Methods
 
