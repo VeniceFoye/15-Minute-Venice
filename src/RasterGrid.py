@@ -149,7 +149,7 @@ class RasterGrid:
         crs      = crs.item()      if isinstance(crs, np.ndarray) else crs
         cellsize = cellsize.item() if isinstance(cellsize, np.ndarray) else cellsize
 
-        new_raster_grid = RasterGrid(coordinate_reference_system=crs, cell_size=cellsize)
+        new_raster_grid = cls(coordinate_reference_system=crs, cell_size=cellsize)
 
         new_raster_grid.grid = npz_grid['grid']
 
