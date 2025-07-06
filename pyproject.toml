@@ -23,6 +23,8 @@ dependencies = [
   "pandas",
   "geopandas",
   "affine",
+  "tcod",
+  "PIL"
 ]
 classifiers = [
     "Programming Language :: Python :: 3",

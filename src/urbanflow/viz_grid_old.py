@@ -60,62 +60,62 @@ import matplotlib.pyplot as plt   # only for color cycle
 #     return img
 
 
-def path_on_grid_image(
-    grid: np.ndarray,
-    transform,                       # affine from venice_grid / gdfs_to_grid
-    path_r: np.ndarray,
-    path_c: np.ndarray,
-    *,
-    scale: int = 5,
-    palette: dict[int, tuple[int, int, int]] | None = None,
-    poi_start: tuple[int, int] | None = None,   # (row_adj, col_adj)
-    poi_end: tuple[int, int]   | None = None,   # (row_adj, col_adj)
-    poi_colour: tuple[int, int, int] = (0, 0, 0),
-    path_colour: tuple[int, int, int] = (255, 215, 0),     # gold
-    path_width: int | None = None,
-) -> Image.Image:
-    """
-    Render grid + (optional) POIs + path.  Returns a PIL Image.
+# def path_on_grid_image(
+#     grid: np.ndarray,
+#     transform,                       # affine from venice_grid / gdfs_to_grid
+#     path_r: np.ndarray,
+#     path_c: np.ndarray,
+#     *,
+#     scale: int = 5,
+#     palette: dict[int, tuple[int, int, int]] | None = None,
+#     poi_start: tuple[int, int] | None = None,   # (row_adj, col_adj)
+#     poi_end: tuple[int, int]   | None = None,   # (row_adj, col_adj)
+#     poi_colour: tuple[int, int, int] = (0, 0, 0),
+#     path_colour: tuple[int, int, int] = (255, 215, 0),     # gold
+#     path_width: int | None = None,
+# ) -> Image.Image:
+#     """
+#     Render grid + (optional) POIs + path.  Returns a PIL Image.
 
-    Parameters
-    ----------
-    path_r, path_c : int arrays
-        Output from `path_from_poi` (exclusive of origin).
-    poi_start / poi_end : (row,col) tuples in grid coords
-        If given, small dots are drawn at those cells.
-    path_width : int
-        Width of the polyline in *pixels*. Defaults to max(1, scale//2).
+#     Parameters
+#     ----------
+#     path_r, path_c : int arrays
+#         Output from `path_from_poi` (exclusive of origin).
+#     poi_start / poi_end : (row,col) tuples in grid coords
+#         If given, small dots are drawn at those cells.
+#     path_width : int
+#         Width of the polyline in *pixels*. Defaults to max(1, scale//2).
 
-    Returns
-    -------
-    PIL.Image.Image  (ready to save or display)
-    """
-    img = grid_to_image(grid, scale=scale, palette=palette)
-    draw = ImageDraw.Draw(img)
-    w = path_width if path_width is not None else max(1, scale // 2)
+#     Returns
+#     -------
+#     PIL.Image.Image  (ready to save or display)
+#     """
+#     img = grid_to_image(grid, scale=scale, palette=palette)
+#     draw = ImageDraw.Draw(img)
+#     w = path_width if path_width is not None else max(1, scale // 2)
 
-    # ------------------------------------------------------------------ #
-    # 1. draw path as a polyline in pixel space
-    # ------------------------------------------------------------------ #
-    pts = [
-        (c * scale + scale // 2, r * scale + scale // 2)
-        for r, c in zip(path_r, path_c)
-    ]
-    if pts:
-        draw.line(pts, fill=path_colour, width=w, joint="curve")
+#     # ------------------------------------------------------------------ #
+#     # 1. draw path as a polyline in pixel space
+#     # ------------------------------------------------------------------ #
+#     pts = [
+#         (c * scale + scale // 2, r * scale + scale // 2)
+#         for r, c in zip(path_r, path_c)
+#     ]
+#     if pts:
+#         draw.line(pts, fill=path_colour, width=w, joint="curve")
 
-    # ------------------------------------------------------------------ #
-    # 2. optional start / end POI dots
-    # ------------------------------------------------------------------ #
-    R = max(2, w)   # radius
-    if poi_start is not None:
-        x, y = poi_start[1] * scale + scale // 2, poi_start[0] * scale + scale // 2
-        draw.ellipse((x - R, y - R, x + R, y + R), fill=poi_colour)
-    if poi_end is not None:
-        x, y = poi_end[1] * scale + scale // 2, poi_end[0] * scale + scale // 2
-        draw.ellipse((x - R, y - R, x + R, y + R), fill=poi_colour)
+#     # ------------------------------------------------------------------ #
+#     # 2. optional start / end POI dots
+#     # ------------------------------------------------------------------ #
+#     R = max(2, w)   # radius
+#     if poi_start is not None:
+#         x, y = poi_start[1] * scale + scale // 2, poi_start[0] * scale + scale // 2
+#         draw.ellipse((x - R, y - R, x + R, y + R), fill=poi_colour)
+#     if poi_end is not None:
+#         x, y = poi_end[1] * scale + scale // 2, poi_end[0] * scale + scale // 2
+#         draw.ellipse((x - R, y - R, x + R, y + R), fill=poi_colour)
 
-    return img
+#     return img
 
 # ---------------------------------------------------------------------
 #  combined – grid + many POIs + a path  (all in one PIL.Image)

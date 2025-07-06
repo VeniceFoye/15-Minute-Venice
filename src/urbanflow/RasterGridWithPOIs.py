@@ -10,7 +10,9 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-from PIL import ImageDraw
+import tcod
+
+from PIL import ImageDraw, Image
 
 import os
 
@@ -27,6 +29,7 @@ class RasterGridWithPOIs(RasterGrid):
     """
 
     POI_gdf: gpd.GeoDataFrame = None
+    tcod_cost_grid : np.ndarray = None
 
     def __init__(
         self,
@@ -48,6 +51,10 @@ class RasterGridWithPOIs(RasterGrid):
 
         self.POI_gdf = POI_gdf
 
+        # Create tcod path.
+
+
+        # self.path2d = tcod.path.path2d(tcod_grid)
     ### Class Methods to Create
 
     @classmethod
@@ -134,6 +141,12 @@ class RasterGridWithPOIs(RasterGrid):
 
         new_RasterGridWithPOIs._align_POI_gdf_to_grid(do_adjusted=do_adjusted)
 
+            # TODO: Add configuration for walkability, costs
+        tcod_grid = new_RasterGridWithPOIs.grid.copy()
+        tcod_grid[tcod_grid == new_RasterGridWithPOIs.legend['canal']] = 0
+        tcod_grid[tcod_grid == new_RasterGridWithPOIs.legend['building']] = 0
+        new_RasterGridWithPOIs.tcod_cost_grid = tcod_grid
+
         return new_RasterGridWithPOIs
 
     @classmethod
@@ -215,7 +228,7 @@ class RasterGridWithPOIs(RasterGrid):
 
     ####### POI Pathing using cpp/path_planner.cpp/path_between_pois PyBind11 Wrapper
 
-    def compute_path_between_POIs(self, start_poi_uid : str, end_poi_uid : str, *, uid_column : str = None, do_logging : bool = False) -> Tuple[np.ndarray, np.ndarray]:
+    def compute_path_between_POIs(self, start_poi_uid : str, end_poi_uid : str, *, do_tcod_pathing : bool = False, uid_column : str = None, do_logging : bool = False) -> Tuple[np.ndarray, np.ndarray]:
         """
         compute_path_between_POIs
 
@@ -266,14 +279,23 @@ class RasterGridWithPOIs(RasterGrid):
             target_poi_c = target_poi['col']
         
         # TODO: add other param options
-        path_r, path_c = path_between_pois(self.grid, source_poi_r, source_poi_c, target_poi_r, target_poi_c)
+        if do_tcod_pathing:
+            path = tcod.path.path2d(self.tcod_cost_grid, start_points=[(source_poi_r, source_poi_c)], end_points=[(target_poi_r, target_poi_c)], cardinal=10, diagonal=14)
+            if path is not None and len(path) > 0:
+                path = np.array(path)
+                path_r = path[:, 0]
+                path_c = path[:, 1]
+            else:
+                path_r = np.array([])
+                path_c = np.array([])
+        else:
+            path_r, path_c = path_between_pois(self.grid, source_poi_r, source_poi_c, target_poi_r, target_poi_c)
 
         return path_r, path_c
 
 
 
     ####### Visualization Methods
-
     def to_image_with_POIs(
         self,
         scale: int = 1,
@@ -316,6 +338,66 @@ class RasterGridWithPOIs(RasterGrid):
             )
 
         return img
+
+    
+    def to_image_with_path(
+        self,
+        path_r: np.ndarray,
+        path_c: np.ndarray,
+        *,
+        scale: int = 5,
+        palette: dict[int, tuple[int, int, int]] | None = None,
+        poi_start: tuple[int, int] | None = None,   # (row_adj, col_adj)
+        poi_end: tuple[int, int]   | None = None,   # (row_adj, col_adj)
+        poi_colour: tuple[int, int, int] = (0, 0, 0),
+        path_colour: tuple[int, int, int] = (255, 215, 0),     # gold
+        path_width: int | None = None,
+    ) -> Image.Image:
+        """
+        Render grid + (optional) POIs + path.  Returns a PIL Image.
+
+        Parameters
+        ----------
+        path_r, path_c : int arrays
+            Output from `path_from_poi` (exclusive of origin).
+        poi_start / poi_end : (row,col) tuples in grid coords
+            If given, small dots are drawn at those cells.
+        path_width : int
+            Width of the polyline in *pixels*. Defaults to max(1, scale//2).
+
+        Returns
+        -------
+        PIL.Image.Image  (ready to save or display)
+        """
+        img = self.to_image(scale=scale, palette=palette)
+        draw = ImageDraw.Draw(img)
+
+        w = path_width if path_width is not None else max(1, scale // 2)
+
+        # ------------------------------------------------------------------ #
+        # 1. draw path as a polyline in pixel space
+        # ------------------------------------------------------------------ #
+        pts = [
+            (c * scale + scale // 2, r * scale + scale // 2)
+            for r, c in zip(path_r, path_c)
+        ]
+        if pts:
+            draw.line(pts, fill=path_colour, width=w, joint="curve")
+
+        # ------------------------------------------------------------------ #
+        # 2. optional start / end POI dots
+        # ------------------------------------------------------------------ #
+        R = max(2, w)   # radius
+        if poi_start is not None:
+            x, y = poi_start[1] * scale + scale // 2, poi_start[0] * scale + scale // 2
+            draw.ellipse((x - R, y - R, x + R, y + R), fill=poi_colour)
+        if poi_end is not None:
+            x, y = poi_end[1] * scale + scale // 2, poi_end[0] * scale + scale // 2
+            draw.ellipse((x - R, y - R, x + R, y + R), fill=poi_colour)
+
+        return img
+
+
 
     ####### Private Methods
 
