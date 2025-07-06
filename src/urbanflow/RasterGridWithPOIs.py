@@ -2,8 +2,8 @@
 RasterGridWithPOIs -> a version of RasterGrid that includes POIs.
 """
 
-from src.RasterGrid import RasterGrid
-from utils.poi_utils import pois_to_grid_coords
+from .RasterGrid import RasterGrid
+from .utils.poi_utils import pois_to_grid_coords
 from typing import Dict
 import numpy as np
 

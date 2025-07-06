@@ -4,8 +4,8 @@ import geopandas as gpd
 from typing import Dict, Tuple
 from PIL import Image
 
-from utils.grid_utils import instantiate_grid_and_transform, rasterize_geoms
-from utils.courtyard_utils import add_auto_courtyards
+from .utils.grid_utils import instantiate_grid_and_transform, rasterize_geoms
+from .utils.courtyard_utils import add_auto_courtyards
 
 # DEFAULT_VENICE_LEGEND = {"ocean" : 0, "street" : 1, "building" : 2, "canal" : 3, "courtyard" : 4}
 
