@@ -154,11 +154,11 @@ py::object path_between_pois_py(py::array_t<uint8_t, py::array::c_style | py::ar
                                 diagonals, rows, cols);
     if (!ok) return py::none();
 
-    // convert to NumPy arrays (int32)
-    py::array_t<int32_t> rarr(rows.size());
-    py::array_t<int32_t> carr(cols.size());
-    std::memcpy(rarr.mutable_data(), rows.data(), rows.size()*sizeof(int32_t));
-    std::memcpy(carr.mutable_data(), cols.data(), cols.size()*sizeof(int32_t));
+    // convert to NumPy arrays (uint16)
+    py::array_t<uint16_t> rarr(rows.size());
+    py::array_t<uint16_t> carr(cols.size());
+    std::memcpy(rarr.mutable_data(), rows.data(), rows.size()*sizeof(uint16_t));
+    std::memcpy(carr.mutable_data(), cols.data(), cols.size()*sizeof(uint16_t));
 
     return py::make_tuple(std::move(rarr), std::move(carr));
 }
