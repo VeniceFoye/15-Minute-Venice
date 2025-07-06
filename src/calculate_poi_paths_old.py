@@ -82,7 +82,7 @@ def path_from_poi(
         v = came[v]
     rev_r.reverse(); rev_c.reverse()
 
-    return np.array(rev_r, dtype=np.int32), np.array(rev_c, dtype=np.int32)
+    return np.array(rev_r, dtype=np.uint32), np.array(rev_c, dtype=np.uint32)
 
 
 

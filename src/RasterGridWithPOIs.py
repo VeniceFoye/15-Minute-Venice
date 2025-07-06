@@ -9,15 +9,9 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-from PIL import Image, ImageDraw
-
+from PIL import ImageDraw
 
 import os
-import sys
-
-import pickle
-
-from affine import Affine
 
 import geopandas as gpd
 
@@ -58,7 +52,7 @@ class RasterGridWithPOIs(RasterGrid):
         POI_gdf: gpd.GeoDataFrame,
         *,
         do_adjusted: bool = True,
-        force_realignment = False
+        force_realignment=False,
     ):
         """
         From RasterGrid and POIs:
@@ -77,8 +71,14 @@ class RasterGridWithPOIs(RasterGrid):
         new_RasterGridWithPOIs.legend = copy(raster_grid.legend)
 
         print("Aligning POI_gdf to Grid . . .")
-        if "row" in new_RasterGridWithPOIs.POI_gdf.columns and "col" in new_RasterGridWithPOIs.POI_gdf.columns and not do_adjusted:
-            print("POI_gdf already contains 'row' and 'col' columns. Skipping coordinate assignment.")
+        if (
+            "row" in new_RasterGridWithPOIs.POI_gdf.columns
+            and "col" in new_RasterGridWithPOIs.POI_gdf.columns
+            and not do_adjusted
+        ):
+            print(
+                "POI_gdf already contains 'row' and 'col' columns. Skipping coordinate assignment."
+            )
             if force_realignment and not do_adjusted:
                 print("force_realignment is True. Aligning anyway.")
                 new_RasterGridWithPOIs.POI_gdf = pois_to_grid_coords(
@@ -99,8 +99,14 @@ class RasterGridWithPOIs(RasterGrid):
                 building_code=new_RasterGridWithPOIs.legend["building"],
             )
 
-        if "row_adj" in new_RasterGridWithPOIs.POI_gdf.columns and "col_adj" in new_RasterGridWithPOIs.POI_gdf.columns and do_adjusted:
-            print("POI_gdf already contains 'row_adj' and 'col_adj' columns. Skipping coordinate assignment.")
+        if (
+            "row_adj" in new_RasterGridWithPOIs.POI_gdf.columns
+            and "col_adj" in new_RasterGridWithPOIs.POI_gdf.columns
+            and do_adjusted
+        ):
+            print(
+                "POI_gdf already contains 'row_adj' and 'col_adj' columns. Skipping coordinate assignment."
+            )
             if force_realignment and do_adjusted:
                 print("force_realignment is True. Aligning anyway.")
                 new_RasterGridWithPOIs.POI_gdf = pois_to_grid_coords(
@@ -121,7 +127,6 @@ class RasterGridWithPOIs(RasterGrid):
                 building_code=new_RasterGridWithPOIs.legend["building"],
             )
 
-        
         new_RasterGridWithPOIs._align_POI_gdf_to_grid(do_adjusted=do_adjusted)
 
         return new_RasterGridWithPOIs
@@ -146,7 +151,7 @@ class RasterGridWithPOIs(RasterGrid):
             "courtyard": 4,
         },
         do_adjusted=True,
-        force_realignment=False
+        force_realignment=False,
     ):
         raster_grid = RasterGrid.from_geojson_dataframes(
             buildings,
@@ -156,10 +161,13 @@ class RasterGridWithPOIs(RasterGrid):
             auto_courtyards=auto_courtyards,
             coordinate_reference_system=coordinate_reference_system,
             cell_size=cell_size,
-            legend=legend
+            legend=legend,
         )
         return cls.from_RasterGrid_and_POIs(
-            raster_grid, POI_gdf, do_adjusted=do_adjusted, force_realignment=force_realignment
+            raster_grid,
+            POI_gdf,
+            do_adjusted=do_adjusted,
+            force_realignment=force_realignment,
         )
 
     ####### Saving / Loading
@@ -184,7 +192,6 @@ class RasterGridWithPOIs(RasterGrid):
             coordinate_reference_system=self.coordinate_reference_system,
         )
 
-
     @classmethod
     def load(cls, filepath):
         """
@@ -192,14 +199,13 @@ class RasterGridWithPOIs(RasterGrid):
         """
         npz_path = os.path.join(filepath, "raster_grid_with_pois_filepath.npz")
         npz_grid = np.load(npz_path, allow_pickle=True)
-        parquet_filepath = npz_grid['POI_gdf_filepath'].item()
+        parquet_filepath = npz_grid["POI_gdf_filepath"].item()
 
         POI_gdf = gpd.read_parquet(parquet_filepath)
 
         raster_grid = RasterGrid.load(npz_path)
 
         return cls.from_RasterGrid_and_POIs(raster_grid=raster_grid, POI_gdf=POI_gdf)
-
 
     ####### Visualization Methods
 
@@ -223,9 +229,11 @@ class RasterGridWithPOIs(RasterGrid):
         # ------------------------------------------------------------------
         cats = self.POI_gdf[function_col].fillna("UNKNOWN").astype(str)
         if color_map is None:
-            base_cycle = plt.cm.get_cmap("tab20").colors   # 20 distinct colors
-            color_map = {cat: tuple(int(255*c) for c in base_cycle[i % 20])
-                        for i, cat in enumerate(sorted(cats.unique()))}
+            base_cycle = plt.cm.get_cmap("tab20").colors  # 20 distinct colors
+            color_map = {
+                cat: tuple(int(255 * c) for c in base_cycle[i % 20])
+                for i, cat in enumerate(sorted(cats.unique()))
+            }
         else:
             # ensure RGB ints 0-255
             color_map = {k: tuple(int(x) for x in v) for k, v in color_map.items()}
@@ -237,10 +245,12 @@ class RasterGridWithPOIs(RasterGrid):
             color = color_map.get(cat, default_color)
             x = c * scale + scale // 2
             y = r * scale + scale // 2
-            draw.ellipse((x - poi_radius, y - poi_radius, x + poi_radius, y + poi_radius), fill=color)
+            draw.ellipse(
+                (x - poi_radius, y - poi_radius, x + poi_radius, y + poi_radius),
+                fill=color,
+            )
 
         return img
-
 
     ####### Private Methods
 

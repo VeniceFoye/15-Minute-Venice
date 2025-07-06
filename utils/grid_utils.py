@@ -71,3 +71,13 @@ def rasterize_geoms(
         all_touched=True,              # mark a cell if geom touches it at all
         default_value=value,
     )
+
+
+def cell_to_polygon(row: int, col: int, transform: Affine):
+    """
+    Return the Shapely polygon representing a single grid cell.
+    Useful for plotting/debugging.
+    """
+    x_min, y_max = transform * (col, row)
+    x_max, y_min = transform * (col + 1, row + 1)
+    return box(x_min, y_min, x_max, y_max)
