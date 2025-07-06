@@ -15,4 +15,5 @@ __all__ = [
     "RasterGrid",
     "RasterGridWithPOIs",
     "path_between_pois",
+    "utils"
 ]
