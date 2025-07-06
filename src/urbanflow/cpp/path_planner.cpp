@@ -40,7 +40,7 @@ struct PQNode {
 // Core C++ implementation: returns true + fills row/col vectors on success.
 // If the destination is unreachable within max_distance it returns false.
 // ---------------------------------------------------------------------------
-static bool path_from_poi_cpp(const uint8_t *grid, int H, int W,
+static bool path_between_pois_cpp(const uint8_t *grid, int H, int W,
                               int sr, int sc, int tr, int tc,
                               int max_distance, bool diagonals,
                               std::vector<int> &out_rows,
@@ -138,7 +138,7 @@ static bool path_from_poi_cpp(const uint8_t *grid, int H, int W,
 // ---------------------------------------------------------------------------
 // PYBIND11 WRAPPER -----------------------------------------------------------
 // ---------------------------------------------------------------------------
-py::object path_from_poi_py(py::array_t<uint8_t, py::array::c_style | py::array::forcecast> grid,
+py::object path_between_pois_py(py::array_t<uint8_t, py::array::c_style | py::array::forcecast> grid,
                             int sr, int sc, int tr, int tc,
                             int max_distance = -1, bool diagonals = true) {
     // request buffer info & sanity checks
@@ -150,7 +150,7 @@ py::object path_from_poi_py(py::array_t<uint8_t, py::array::c_style | py::array:
     const uint8_t *gptr = static_cast<const uint8_t*>(info.ptr);
 
     std::vector<int> rows, cols;
-    bool ok = path_from_poi_cpp(gptr, H, W, sr, sc, tr, tc, max_distance,
+    bool ok = path_between_pois_cpp(gptr, H, W, sr, sc, tr, tc, max_distance,
                                 diagonals, rows, cols);
     if (!ok) return py::none();
 
@@ -165,7 +165,7 @@ py::object path_from_poi_py(py::array_t<uint8_t, py::array::c_style | py::array:
 
 PYBIND11_MODULE(path_planner, m) {
     m.doc() = "Fast A* path-finder for street/courtyard grids with max_distance cut-off";
-    m.def("path_from_poi", &path_from_poi_py,
+    m.def("path_between_pois", &path_between_pois_py,
           py::arg("grid"), py::arg("sr"), py::arg("sc"),
           py::arg("tr"), py::arg("tc"),
           py::arg("max_distance") = -1,

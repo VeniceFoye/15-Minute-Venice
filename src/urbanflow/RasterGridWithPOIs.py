@@ -4,7 +4,8 @@ RasterGridWithPOIs -> a version of RasterGrid that includes POIs.
 
 from .RasterGrid import RasterGrid
 from .utils.poi_utils import pois_to_grid_coords
-from typing import Dict
+from .cpp.path_planner import path_between_pois
+from typing import Dict, Tuple
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -40,6 +41,10 @@ class RasterGridWithPOIs(RasterGrid):
                 f"Warning! POI GeoDataFrame not in CRS {self.coordinate_reference_system}. Changing to that CRS now."
             )
             POI_gdf = POI_gdf.to_crs(self.coordinate_reference_system)
+        
+        if 'uid' in POI_gdf.columns:
+            print(f"Setting column `uid` to be the index column for the POI_gdf.")
+            POI_gdf = POI_gdf.set_index("uid")
 
         self.POI_gdf = POI_gdf
 
@@ -206,6 +211,66 @@ class RasterGridWithPOIs(RasterGrid):
         raster_grid = RasterGrid.load(npz_path)
 
         return cls.from_RasterGrid_and_POIs(raster_grid=raster_grid, POI_gdf=POI_gdf)
+    
+
+    ####### POI Pathing using cpp/path_planner.cpp/path_between_pois PyBind11 Wrapper
+
+    def compute_path_between_POIs(self, start_poi_uid : str, end_poi_uid : str, *, uid_column : str = None, do_logging : bool = False) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        compute_path_between_POIs
+
+        Compute the path across the RasterGrid between two POIs in the POI_gdf, according to their "uid."
+        Note that the path from X -> Y should be the same as Y -> X
+
+        Parameters
+        ----------
+        start_poi_uid : str
+            The uid of the originaiting POI, e.g. "CNC-0001"
+        end_poi_uid : str
+            The uid of the target POI, e.g. "APO-0419"
+
+            
+        Returns
+        -------
+        row : np.ndarray
+            The row values of the path
+        col : np.ndarray
+            The column values of the path
+        """
+        poi_gdf = self.POI_gdf
+
+        # TODO: add check for non uid index
+        if uid_column is not None:
+            poi_gdf.set_index(uid_column)
+        
+        source_poi = poi_gdf.loc[start_poi_uid]
+        target_poi = poi_gdf.loc[end_poi_uid]
+
+        if 'row_adj' in poi_gdf.columns:
+            if do_logging:
+                print("Using adjusted row and col values")
+
+            source_poi_r = source_poi['row_adj']
+            source_poi_c = source_poi['col_adj']
+
+            target_poi_r = target_poi['row_adj']
+            target_poi_c = target_poi['col_adj']
+        else:
+            if do_logging:
+                print("Warning! Using NON adjusted row and col values")
+
+            source_poi_r = source_poi['row']
+            source_poi_c = source_poi['col']
+
+            target_poi_r = target_poi['row']
+            target_poi_c = target_poi['col']
+        
+        # TODO: add other param options
+        path_r, path_c = path_between_pois(self.grid, source_poi_r, source_poi_c, target_poi_r, target_poi_c)
+
+        return path_r, path_c
+
+
 
     ####### Visualization Methods
 
