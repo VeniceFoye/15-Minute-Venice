@@ -17,15 +17,26 @@ description = "A package to rasterize GeoJson files of cities and calculate morp
 readme = "README.md"
 requires-python = ">=3.11.10"
 dependencies = [
-  "numpy>=1.24",            # works with Python 3.11+
+  "numpy>=1.24",
   "shapely>=2.0",
   "matplotlib>=3.7",
   "pandas>=2.0",
   "geopandas>=0.14",
   "affine>=2.4",
-  "Pillow>=10.0",           # <-- was 'PIL'
+  "Pillow>=10.0",           
   "tcod>=19.4",
 ]
+
+[project.optional-dependencies]
+docs = [
+  "sphinx>=7",
+  "furo",
+  "myst-parser",
+  "sphinx-autodoc-typehints",
+  "sphinxcontrib-napoleon",
+  "sphinx-copybutton",
+]
+
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: C++",
