@@ -39,6 +39,7 @@ autodoc_default_options = {
     "inherited-members": True,
     "show-inheritance": True,
 }
+
 autodoc_typehints = "description"    # put type hints into the description
 napoleon_google_docstring = False    # we use NumPy style
 napoleon_numpy_docstring = True
@@ -47,9 +48,17 @@ napoleon_attr_annotations = True
 templates_path = ["_templates"]
 exclude_patterns = []
 
+autodoc_mock_imports = [
+    "rasterio",
+    "scipy",
+    "tcod",
+    "urbanflow.cpp",               # your pybind module package
+    "urbanflow.cpp.path_planner",  # the symbol used
+]
+
 # -- HTML --------------------------------------------------------------------
 html_theme = "furo"    # or "sphinx_rtd_theme"
-html_static_path = ["_static"]
+html_static_path = []
 
 # -- Intersphinx: link out to common libs -----------------------------------
 intersphinx_mapping = {
