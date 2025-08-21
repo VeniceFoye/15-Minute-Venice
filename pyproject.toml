@@ -27,6 +27,15 @@ dependencies = [
   "tcod>=19.4",
 ]
 
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+
 [project.optional-dependencies]
 docs = [
   "sphinx>=7",
@@ -36,12 +45,4 @@ docs = [
   "sphinxcontrib-napoleon",
   "sphinx-copybutton",
 ]
-
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Programming Language :: C++",
-    "Operating System :: OS Independent",
-]
-license = "MIT"
-license-files = ["LICEN[CS]E*"]
 
