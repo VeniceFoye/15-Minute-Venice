@@ -42,7 +42,7 @@ def _union_bounds(*gdfs: gpd.GeoDataFrame) -> Tuple[float, float, float, float]:
         x0, y0, x1, y1 = gdf.total_bounds
         min_x, min_y = min(min_x, x0), min(min_y, y0)
         max_x, max_y = max(max_x, x1), max(max_y, y1)
-    return min_x, max_x, min_y, max_y
+    return min_x, min_y, max_x, max_y
 
 
 def _snap_extent(
