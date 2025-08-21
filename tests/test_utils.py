@@ -63,7 +63,7 @@ def test_grid_utils_functions():
     assert isinstance(transform, Affine)
 
     ub = _union_bounds(gdf1, gdf2)
-    assert ub == (0.0,2.0,0.0,2.0)
+    assert ub == (0.0, 0.0, 2.0, 2.0)
 
     snap = _snap_extent(1, 0.2,1.7,0.3,1.9)
     assert snap == (0,2,0,2)
