@@ -17,6 +17,17 @@ def make_simple_rastergrid():
     return rg
 
 def test_save_and_load(tmp_path):
+    """
+    Test that a RasterGrid can be saved to disk and reloaded without data loss.
+
+    - Create a simple 2x2 raster grid with legend and affine transform.
+    - Save it to a temporary .npz file and reload using RasterGrid.load.
+    - Assert that:
+        * grid values are identical,
+        * affine transform is preserved,
+        * legend is preserved,
+        * cell size and CRS are preserved.
+    """
     rg = make_simple_rastergrid()
     path = tmp_path / "grid.npz"
     rg.save(path)
@@ -28,6 +39,13 @@ def test_save_and_load(tmp_path):
     assert rg.coordinate_reference_system == rg2.coordinate_reference_system
 
 def test_to_image_errors_and_scaling():
+    """
+    Test image rendering from a RasterGrid.
+
+    - Calling to_image with scale=0 should raise ValueError.
+    - Rendering with scale=2 and a minimal palette should return a PIL.Image.
+    - Assert that the image size matches the scaled grid dimensions (4x4 pixels).
+    """
     rg = make_simple_rastergrid()
     with pytest.raises(ValueError):
         rg.to_image(scale=0)
@@ -36,6 +54,14 @@ def test_to_image_errors_and_scaling():
     assert img.size == (4,4)
 
 def test_from_geojson_dataframes():
+    """
+    Test building a RasterGrid from GeoDataFrames of different feature types.
+
+    - Construct small polygons representing buildings, streets, canals, and a courtyard.
+    - Call RasterGrid.from_geojson_dataframes with auto_courtyards disabled.
+    - Assert that the resulting grid has the correct shape.
+    - Assert that all raster values are contained within the legend values.
+    """
     buildings = gpd.GeoDataFrame({'geometry':[Polygon([(0,0),(1,0),(1,1),(0,1)])]}, crs='EPSG:32633')
     streets = gpd.GeoDataFrame({'geometry':[Polygon([(1,0),(2,0),(2,1),(1,1)])]}, crs='EPSG:32633')
     canals = gpd.GeoDataFrame({'geometry':[Polygon([(0,1),(1,1),(1,2),(0,2)])]}, crs='EPSG:32633')
