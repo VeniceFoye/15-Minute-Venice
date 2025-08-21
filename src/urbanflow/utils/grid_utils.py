@@ -79,7 +79,17 @@ def _union_bounds(*gdfs: gpd.GeoDataFrame) -> Tuple[float, float, float, float]:
     Notes
     -----
     - The minimum bounds are floored to the nearest multiple of ``cell_size``.
-    - The maximum bounds are ceiled to the nearest multiple of ``cell_size``.
+    Compute the union of the bounding boxes of one or more GeoDataFrames.
+
+    Parameters
+    ----------
+    *gdfs : geopandas.GeoDataFrame
+        One or more GeoDataFrames whose bounds will be combined.
+
+    Returns
+    -------
+    min_x, min_y, max_x, max_y : tuple of float
+        The minimum and maximum x and y coordinates of the unioned bounding box.
     """
     min_x, min_y, max_x, max_y = gdfs[0].total_bounds
     for gdf in gdfs[1:]:
