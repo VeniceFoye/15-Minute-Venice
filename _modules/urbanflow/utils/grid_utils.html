@@ -203,11 +203,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../_autosummary/urbanflow.html">urbanflow</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of urbanflow</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/urbanflow.RasterGrid.html">urbanflow.RasterGrid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../_autosummary/urbanflow.RasterGridWithPOIs.html">urbanflow.RasterGridWithPOIs</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/urbanflow.cpp.html">urbanflow.cpp</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of urbanflow.cpp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/urbanflow.cpp.path_planner.html">urbanflow.cpp.path_planner</a></li>
-</ul>
-</li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/urbanflow.utils.html">urbanflow.utils</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of urbanflow.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../../_autosummary/urbanflow.utils.html">urbanflow.utils</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of urbanflow.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/urbanflow.utils.courtyard_utils.html">urbanflow.utils.courtyard_utils</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/urbanflow.utils.grid_utils.html">urbanflow.utils.grid_utils</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/urbanflow.utils.poi_utils.html">urbanflow.utils.poi_utils</a></li>
@@ -343,7 +339,17 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    - The minimum bounds are floored to the nearest multiple of ``cell_size``.</span>
-<span class="sd">    - The maximum bounds are ceiled to the nearest multiple of ``cell_size``.</span>
+<span class="sd">    Compute the union of the bounding boxes of one or more GeoDataFrames.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    *gdfs : geopandas.GeoDataFrame</span>
+<span class="sd">        One or more GeoDataFrames whose bounds will be combined.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    min_x, min_y, max_x, max_y : tuple of float</span>
+<span class="sd">        The minimum and maximum x and y coordinates of the unioned bounding box.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">gdfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">total_bounds</span>
     <span class="k">for</span> <span class="n">gdf</span> <span class="ow">in</span> <span class="n">gdfs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>

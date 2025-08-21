@@ -204,11 +204,7 @@
 <li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">urbanflow</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of urbanflow</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="urbanflow.RasterGrid.html">urbanflow.RasterGrid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="urbanflow.RasterGridWithPOIs.html">urbanflow.RasterGridWithPOIs</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="urbanflow.cpp.html">urbanflow.cpp</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of urbanflow.cpp</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="urbanflow.cpp.path_planner.html">urbanflow.cpp.path_planner</a></li>
-</ul>
-</li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="urbanflow.utils.html">urbanflow.utils</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of urbanflow.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="urbanflow.utils.html">urbanflow.utils</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of urbanflow.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="urbanflow.utils.courtyard_utils.html">urbanflow.utils.courtyard_utils</a></li>
 <li class="toctree-l4"><a class="reference internal" href="urbanflow.utils.grid_utils.html">urbanflow.utils.grid_utils</a></li>
 <li class="toctree-l4"><a class="reference internal" href="urbanflow.utils.poi_utils.html">urbanflow.utils.poi_utils</a></li>
@@ -675,32 +671,6 @@ matplotlib <code class="docutils literal notranslate"><span class="pre">tab20</s
 
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="urbanflow.path_between_pois">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.</span></span><span class="sig-name descname"><span class="pre">path_between_pois</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.uint8</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_distance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagonals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><span class="pre">object</span></a></span></span><a class="headerlink" href="#urbanflow.path_between_pois" title="Link to this definition">¶</a></dt>
-<dd><p>Compute shortest walkable path between two cells using A*.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>grid</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><em>numpy.ndarray</em></a><em>[</em><em>uint8</em><em>]</em>) – 2-D occupancy grid. 1=street (cheap), 4=courtyard (expensive), everything else = blocked.</p></li>
-<li><p><strong>sr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Start cell (row, col).</p></li>
-<li><p><strong>sc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Start cell (row, col).</p></li>
-<li><p><strong>tr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Target cell (row, col).</p></li>
-<li><p><strong>tc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Target cell (row, col).</p></li>
-<li><p><strong>max_distance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Abort search once more than this many steps from start have been expanded.
-Negative → unlimited (default).</p></li>
-<li><p><strong>diagonals</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – Allow 8-neighbour moves (default True).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>(path_r, path_c)</strong> – Row/col indices <strong>excluding</strong> the origin cell.  None if no path was found.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)">tuple</a>[np.ndarray[int32], np.ndarray[int32]]</p>
-</dd>
-</dl>
-</dd></dl>
-
 <p class="rubric">Modules</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
@@ -711,10 +681,7 @@ Negative → unlimited (default).</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="urbanflow.RasterGridWithPOIs.html#urbanflow.RasterGridWithPOIs" title="urbanflow.RasterGridWithPOIs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RasterGridWithPOIs</span></code></a>(POI_gdf[, ...])</p></td>
 <td><p>Raster grid with Points of Interest (POIs).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="urbanflow.cpp.html#module-urbanflow.cpp" title="urbanflow.cpp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cpp</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="urbanflow.utils.html#module-urbanflow.utils" title="urbanflow.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="urbanflow.utils.html#module-urbanflow.utils" title="urbanflow.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -806,7 +773,6 @@ Negative → unlimited (default).</p></li>
 <li><a class="reference internal" href="#urbanflow.RasterGridWithPOIs.to_image_with_path"><code class="docutils literal notranslate"><span class="pre">RasterGridWithPOIs.to_image_with_path()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#urbanflow.path_between_pois"><code class="docutils literal notranslate"><span class="pre">path_between_pois()</span></code></a></li>
 </ul>
 </li>
 </ul>
