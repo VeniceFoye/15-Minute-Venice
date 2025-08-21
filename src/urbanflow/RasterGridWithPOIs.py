@@ -1,6 +1,44 @@
 """
-RasterGridWithPOIs -> a version of RasterGrid that includes POIs.
+RasterGridWithPOIs
+==================
+
+Extension of :class:`urbanflow.RasterGrid` that integrates points of interest
+(POIs) with the raster grid. This module provides tools to:
+
+- Align POIs stored in a :class:`geopandas.GeoDataFrame` to raster grid cells.
+- Store both raw (row, col) and adjusted (row_adj, col_adj) POI coordinates,
+  where adjusted coordinates are snapped to the nearest accessible street cell.
+- Compute shortest paths between POIs using either:
+  * A fast C++ path planner (via PyBind11).
+  * An optional `tcod`-based pathfinding backend.
+- Visualize the raster grid with:
+  * POIs drawn as colored dots by category.
+  * Paths drawn as polylines with optional start/end markers.
+- Save and load complete grid+POI objects to/from disk.
+
+Classes
+-------
+RasterGridWithPOIs
+    A subclass of :class:`RasterGrid` that adds POI handling, alignment,
+    pathfinding, and visualization utilities.
+
+Typical usage
+-------------
+>>> import geopandas as gpd
+>>> from urbanflow.RasterGrid import RasterGrid
+>>> from urbanflow.RasterGridWithPOIs import RasterGridWithPOIs
+>>> # Load base raster and POIs
+>>> rg = RasterGrid.from_geojson_dataframes(buildings, streets, canals)
+>>> pois = gpd.read_file("pois.geojson")
+>>> # Create combined object
+>>> rgp = RasterGridWithPOIs.from_RasterGrid_and_POIs(rg, pois)
+>>> # Compute path between POIs
+>>> rows, cols = rgp.compute_path_between_POIs("POI_A", "POI_B")
+>>> # Render visualization
+>>> img = rgp.to_image_with_path(rows, cols)
+>>> img.show()
 """
+
 
 from .RasterGrid import RasterGrid
 from .utils.poi_utils import pois_to_grid_coords
@@ -23,9 +61,21 @@ from copy import copy
 
 class RasterGridWithPOIs(RasterGrid):
     """
-    RasterGridWithPOIs
+    Raster grid with Points of Interest (POIs).
 
-    A RasterGrid class that provides wrapping around a POI_gdf, which is a GeoPandas.GeoDataFrame.
+    Extends :class:`urbanflow.RasterGrid` by attaching a
+    :class:`geopandas.GeoDataFrame` of POIs to the raster grid,
+    aligning them to grid cells, and enabling pathfinding between POIs.
+    Includes methods for saving/loading, path computation, and visualization.
+
+    Attributes
+    ----------
+    POI_gdf : geopandas.GeoDataFrame
+        GeoDataFrame of points of interest, with columns for grid coordinates
+        (``row``, ``col``) and optionally adjusted coordinates
+        (``row_adj``, ``col_adj``).
+    tcod_cost_grid : ndarray of int
+        Grid suitable for `tcod` pathfinding, with impassable cells set to 0.
     """
 
     POI_gdf: gpd.GeoDataFrame = None
@@ -37,6 +87,19 @@ class RasterGridWithPOIs(RasterGrid):
         coordinate_reference_system="EPSG:32633",
         cell_size=1,
     ):
+        """
+        Initialize a RasterGridWithPOIs.
+
+        Parameters
+        ----------
+        POI_gdf : geopandas.GeoDataFrame
+            GeoDataFrame of POIs. Must contain a geometry column. If a
+            ``uid`` column exists, it is set as the index.
+        coordinate_reference_system : str, optional
+            CRS for the raster grid and POIs. Defaults to EPSG:32633 (UTM 33N).
+        cell_size : int, optional
+            Resolution of raster grid cells. Defaults to 1.
+        """
         super().__init__(coordinate_reference_system, cell_size)
 
         if POI_gdf.crs != self.coordinate_reference_system:
@@ -51,12 +114,8 @@ class RasterGridWithPOIs(RasterGrid):
 
         self.POI_gdf = POI_gdf
 
-        # Create tcod path.
 
-
-        # self.path2d = tcod.path.path2d(tcod_grid)
     ### Class Methods to Create
-
     @classmethod
     def from_RasterGrid_and_POIs(
         cls,
@@ -67,11 +126,25 @@ class RasterGridWithPOIs(RasterGrid):
         force_realignment=False,
     ):
         """
-        From RasterGrid and POIs:
+        Construct a RasterGridWithPOIs from an existing RasterGrid and POIs.
 
-        Pseudocode:
-        - Load in RasterGrid and its transform
-        - Add the 'row' and 'col' as well as 'row_adj' and 'col_adj' columns to POI_geojson
+        Parameters
+        ----------
+        raster_grid : RasterGrid
+            The base raster grid object.
+        POI_gdf : geopandas.GeoDataFrame
+            GeoDataFrame containing POIs.
+        do_adjusted : bool, optional
+            Whether to compute adjusted POI coordinates (snapped to nearest
+            street cell). Defaults to True.
+        force_realignment : bool, optional
+            If True, realign POIs to the grid even if row/col columns exist.
+            Defaults to False.
+
+        Returns
+        -------
+        RasterGridWithPOIs
+            A new instance with POIs aligned to the raster grid.
         """
         # Assign the RasterGrid Attributes
         new_RasterGridWithPOIs = cls(
@@ -171,6 +244,35 @@ class RasterGridWithPOIs(RasterGrid):
         do_adjusted=True,
         force_realignment=False,
     ):
+        """
+        Construct a RasterGridWithPOIs directly from GeoDataFrames of features
+        and a POI GeoDataFrame.
+
+        Parameters
+        ----------
+        buildings, streets, canals, courtyards : geopandas.GeoDataFrame
+            Feature layers used to generate the base raster grid.
+        POI_gdf : geopandas.GeoDataFrame
+            GeoDataFrame of POIs.
+        auto_courtyards : bool, optional
+            Whether to automatically generate courtyard cells. Defaults to True.
+        coordinate_reference_system : str, optional
+            Target CRS. Defaults to EPSG:32633.
+        cell_size : int, optional
+            Grid resolution in coordinate units. Defaults to 1.
+        legend : dict, optional
+            Mapping of feature types to integer codes. Defaults to
+            {ocean:0, street:1, building:2, canal:3, courtyard:4}.
+        do_adjusted : bool, optional
+            Compute adjusted POI coordinates. Defaults to True.
+        force_realignment : bool, optional
+            If True, force POI realignment. Defaults to False.
+
+        Returns
+        -------
+        RasterGridWithPOIs
+            A raster grid with POIs aligned to grid cells.
+        """
         raster_grid = RasterGrid.from_geojson_dataframes(
             buildings,
             streets,
@@ -192,7 +294,18 @@ class RasterGridWithPOIs(RasterGrid):
 
     def save(self, filepath: str):
         """
-        Save a RasterGridWithPOIs to a *Directory*.
+        Save a RasterGridWithPOIs to a directory.
+
+        Parameters
+        ----------
+        filepath : str
+            Path to the directory where the object will be saved.
+            Creates the directory if it does not exist.
+
+        Notes
+        -----
+        - POIs are stored as a Parquet file.
+        - Grid, transform, legend, and metadata are stored in a compressed NPZ.
         """
         if not os.path.isdir(filepath):
             os.makedirs(filepath, exist_ok=True)
@@ -213,7 +326,17 @@ class RasterGridWithPOIs(RasterGrid):
     @classmethod
     def load(cls, filepath):
         """
-        Create a RasterGridWithPOIs object from a directory.
+        Load a RasterGridWithPOIs from a saved directory.
+
+        Parameters
+        ----------
+        filepath : str
+            Directory containing saved raster grid and POI files.
+
+        Returns
+        -------
+        RasterGridWithPOIs
+            Loaded raster grid with POIs.
         """
         npz_path = os.path.join(filepath, "raster_grid_with_pois_filepath.npz")
         npz_grid = np.load(npz_path, allow_pickle=True)
@@ -230,25 +353,33 @@ class RasterGridWithPOIs(RasterGrid):
 
     def compute_path_between_POIs(self, start_poi_uid : str, end_poi_uid : str, *, do_tcod_pathing : bool = False, uid_column : str = None, do_logging : bool = False) -> Tuple[np.ndarray, np.ndarray]:
         """
-        compute_path_between_POIs
-
-        Compute the path across the RasterGrid between two POIs in the POI_gdf, according to their "uid."
-        Note that the path from X -> Y should be the same as Y -> X
+        Compute the shortest path between two POIs on the raster grid.
 
         Parameters
         ----------
         start_poi_uid : str
-            The uid of the originaiting POI, e.g. "CNC-0001"
+            UID of the source POI (index in POI_gdf).
         end_poi_uid : str
-            The uid of the target POI, e.g. "APO-0419"
+            UID of the target POI.
+        do_tcod_pathing : bool, optional
+            If True, use `tcod` pathfinding instead of the C++ planner.
+            Defaults to False.
+        uid_column : str, optional
+            Column name to set as index if POI_gdf is not indexed by UID.
+        do_logging : bool, optional
+            If True, print diagnostic information. Defaults to False.
 
-            
         Returns
         -------
-        row : np.ndarray
-            The row values of the path
-        col : np.ndarray
-            The column values of the path
+        path_r : ndarray of int
+            Row indices of the computed path.
+        path_c : ndarray of int
+            Column indices of the computed path.
+
+        Notes
+        -----
+        - If ``row_adj``/``col_adj`` exist, adjusted coordinates are used.
+        - If no path is found, empty arrays are returned.
         """
         poi_gdf = self.POI_gdf
 
@@ -305,6 +436,32 @@ class RasterGridWithPOIs(RasterGrid):
         default_color: tuple[int, int, int] = (0, 0, 0),
         poi_radius: int | None = None,
     ):
+        """
+        Render the raster grid with POIs drawn as colored dots.
+
+        Parameters
+        ----------
+        scale : int, optional
+            Scale factor for rendering. Each cell becomes a square of
+            size ``scale``. Defaults to 1.
+        palette : dict of int -> (r,g,b), optional
+            Mapping from raster values to RGB colors.
+        function_col : str, optional
+            Column in POI_gdf used for categorical coloring. Defaults to
+            ``"PP_Function_TOP"``.
+        color_map : dict of str -> (r,g,b), optional
+            Mapping from categories to RGB colors. If None, a default
+            matplotlib ``tab20`` palette is used.
+        default_color : tuple of int, optional
+            Fallback color (RGB). Defaults to black.
+        poi_radius : int, optional
+            Radius of POI dots in pixels. Defaults to ``max(1, scale//2)``.
+
+        Returns
+        -------
+        PIL.Image.Image
+            Image of the raster grid with POIs overlayed.
+        """
         # Get the image from the grid
         img = super().to_image(scale=scale, palette=palette)
 
@@ -354,20 +511,30 @@ class RasterGridWithPOIs(RasterGrid):
         path_width: int | None = None,
     ) -> Image.Image:
         """
-        Render grid + (optional) POIs + path.  Returns a PIL Image.
+        Render the raster grid with an overlayed path and optional POI markers.
 
         Parameters
         ----------
-        path_r, path_c : int arrays
-            Output from `path_from_poi` (exclusive of origin).
-        poi_start / poi_end : (row,col) tuples in grid coords
-            If given, small dots are drawn at those cells.
-        path_width : int
-            Width of the polyline in *pixels*. Defaults to max(1, scale//2).
+        path_r, path_c : ndarray of int
+            Row and column indices of the path.
+        scale : int, optional
+            Scale factor for rendering. Defaults to 5.
+        palette : dict of int -> (r,g,b), optional
+            Mapping from raster values to RGB colors.
+        poi_start, poi_end : tuple of (row, col), optional
+            Coordinates of start and end POIs to highlight.
+        poi_colour : tuple of int, optional
+            Color of start/end POI dots. Defaults to black.
+        path_colour : tuple of int, optional
+            Color of the path polyline. Defaults to gold.
+        path_width : int, optional
+            Width of the path polyline in pixels. Defaults to
+            ``max(1, scale//2)``.
 
         Returns
         -------
-        PIL.Image.Image  (ready to save or display)
+        PIL.Image.Image
+            Image of the raster grid with path overlayed.
         """
         img = self.to_image(scale=scale, palette=palette)
         draw = ImageDraw.Draw(img)
@@ -403,7 +570,23 @@ class RasterGridWithPOIs(RasterGrid):
 
     def _align_POI_gdf_to_grid(self, do_adjusted=True):
         """
-        _align_POIs_to_grid: Align the POI_geojson to the grid
+        Align POIs in the GeoDataFrame to raster grid coordinates.
+
+        Parameters
+        ----------
+        do_adjusted : bool, optional
+            If True, compute adjusted POI coordinates snapped to nearest
+            accessible cells (e.g., streets). Defaults to True.
+
+        Raises
+        ------
+        ValueError
+            If POI_gdf is None.
+
+        Notes
+        -----
+        Updates ``POI_gdf`` in place by adding or overwriting
+        ``row``, ``col``, and (optionally) ``row_adj``/``col_adj``.
         """
         if self.POI_gdf is None:
             raise ValueError(
