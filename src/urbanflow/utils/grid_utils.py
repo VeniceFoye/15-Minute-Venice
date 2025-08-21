@@ -6,6 +6,7 @@ Utilities for combining and reading GeoPandas files, or applying operations on t
 
 import geopandas as gpd
 import numpy as np
+from shapely.geometry import box
 from affine import Affine
 from typing import Tuple, Iterable
 from rasterio import features
