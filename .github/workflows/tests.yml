@@ -35,13 +35,8 @@ jobs:
 
       - name: Install package + test deps
         run: |
-          # If you defined extras in pyproject.toml:
-          #   [project.optional-dependencies]
-          #   dev = ["pytest", "pytest-cov", ...]
           pip install -e .[dev]
-          # If you don't have a dev extra, do:
-          # pip install -e .
-          # pip install pytest pytest-cov
+
 
       # If importing your package at collection-time needs environment hints,
       # set them here (optional).

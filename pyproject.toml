@@ -45,4 +45,5 @@ docs = [
   "sphinxcontrib-napoleon",
   "sphinx-copybutton",
 ]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff", "mypy"]
 
