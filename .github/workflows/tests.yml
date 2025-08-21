@@ -1,0 +1,64 @@
+name: tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    name: py${{ matrix.python-version }} • ubuntu-latest
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      # Optional but recommended for scikit-build/pybind11 projects
+      - name: Install build tools (cmake/ninja)
+        run: |
+          python -m pip install --upgrade pip
+          pip install cmake ninja
+
+      - name: Install package + test deps
+        run: |
+          # If you defined extras in pyproject.toml:
+          #   [project.optional-dependencies]
+          #   dev = ["pytest", "pytest-cov", ...]
+          pip install -e .[dev]
+          # If you don't have a dev extra, do:
+          # pip install -e .
+          # pip install pytest pytest-cov
+
+      # If importing your package at collection-time needs environment hints,
+      # set them here (optional).
+      # - name: Set test env
+      #   run: echo "ENV_VAR=1" >> $GITHUB_ENV
+
+      - name: Run tests
+        run: |
+          mkdir -p reports
+          pytest -q --maxfail=1 --disable-warnings \
+            --junitxml=reports/junit.xml \
+            --cov=urbanflow --cov-report=xml:reports/coverage.xml
+
+      - name: Upload test reports (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-py${{ matrix.python-version }}
+          path: reports/
+          if-no-files-found: warn

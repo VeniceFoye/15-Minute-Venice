@@ -72,3 +72,7 @@ img.show()
 ```
 
 Loading, Saving, etc. works generally the same with `RasterGridWithPOIs` as it does for `RasterGrid` objects.
+
+## API Documentation
+
+Available at https://venicefoye.github.io/15-Minute-Venice/index.html
