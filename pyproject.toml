@@ -25,6 +25,7 @@ dependencies = [
   "affine>=2.4",
   "Pillow>=10.0",           
   "tcod>=19.4",
+  "scipy"
 ]
 
 classifiers = [
