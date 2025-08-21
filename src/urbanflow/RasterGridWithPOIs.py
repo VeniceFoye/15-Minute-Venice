@@ -406,7 +406,7 @@ class RasterGridWithPOIs(RasterGrid):
         _align_POIs_to_grid: Align the POI_geojson to the grid
         """
         if self.POI_gdf is None:
-            return ValueError(
+            raise ValueError(
                 "ValueError: RasterGridWithPOIs.POI_geojson must not be none!"
             )
 
