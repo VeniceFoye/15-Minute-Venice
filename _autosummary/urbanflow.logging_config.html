@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="urbanflow.utils.sommarioni_utils" href="urbanflow.utils.sommarioni_utils.html" /><link rel="prev" title="urbanflow.utils.grid_utils" href="urbanflow.utils.grid_utils.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="urbanflow.utils" href="urbanflow.utils.html" /><link rel="prev" title="urbanflow.RasterGridWithPOIs" href="urbanflow.RasterGridWithPOIs.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-        <title>urbanflow.utils.poi_utils - 15-Minute-Venice 0.1.0 documentation</title>
+        <title>urbanflow.logging_config - 15-Minute-Venice 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -203,11 +203,11 @@
 <li class="toctree-l2 current has-children"><a class="reference internal" href="urbanflow.html">urbanflow</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of urbanflow</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="urbanflow.RasterGrid.html">urbanflow.RasterGrid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="urbanflow.RasterGridWithPOIs.html">urbanflow.RasterGridWithPOIs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="urbanflow.logging_config.html">urbanflow.logging_config</a></li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="urbanflow.utils.html">urbanflow.utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of urbanflow.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">urbanflow.logging_config</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="urbanflow.utils.html">urbanflow.utils</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of urbanflow.utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="urbanflow.utils.courtyard_utils.html">urbanflow.utils.courtyard_utils</a></li>
 <li class="toctree-l4"><a class="reference internal" href="urbanflow.utils.grid_utils.html">urbanflow.utils.grid_utils</a></li>
-<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">urbanflow.utils.poi_utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="urbanflow.utils.poi_utils.html">urbanflow.utils.poi_utils</a></li>
 <li class="toctree-l4"><a class="reference internal" href="urbanflow.utils.sommarioni_utils.html">urbanflow.utils.sommarioni_utils</a></li>
 </ul>
 </li>
@@ -235,7 +235,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/_autosummary/urbanflow.utils.poi_utils.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/_autosummary/urbanflow.logging_config.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -255,92 +255,40 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-urbanflow.utils.poi_utils">
-<span id="urbanflow-utils-poi-utils"></span><h1>urbanflow.utils.poi_utils<a class="headerlink" href="#module-urbanflow.utils.poi_utils" title="Link to this heading">¶</a></h1>
+          <section id="module-urbanflow.logging_config">
+<span id="urbanflow-logging-config"></span><h1>urbanflow.logging_config<a class="headerlink" href="#module-urbanflow.logging_config" title="Link to this heading">¶</a></h1>
+<p>Centralized logging configuration for the urbanflow package.</p>
+<p>This module sets up a logger for the urbanflow package that can be
+imported and used throughout the codebase to replace print statements
+with proper logging calls.</p>
 <p class="rubric">Functions</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#urbanflow.utils.poi_utils.point_to_cell" title="urbanflow.utils.poi_utils.point_to_cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">point_to_cell</span></code></a>(x, y, transform)</p></td>
-<td><p>Convert a CRS-aligned point to (row, col).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#urbanflow.utils.poi_utils.pois_to_grid_coords" title="urbanflow.utils.poi_utils.pois_to_grid_coords"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pois_to_grid_coords</span></code></a>(poi_gdf, transform, grid, *)</p></td>
-<td><p>Map POI coordinates to grid indices AND snap them to the nearest 'door cell' (street cell adjacent to a building).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#urbanflow.utils.poi_utils.pois_within_radius" title="urbanflow.utils.poi_utils.pois_within_radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pois_within_radius</span></code></a>(poi_gdf, poi_idx, ...[, ...])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#urbanflow.logging_config.setup_logger" title="urbanflow.logging_config.setup_logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_logger</span></code></a>([name, level, format_string])</p></td>
+<td><p>Set up and configure a logger for the urbanflow package.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <dl class="py function">
-<dt class="sig sig-object py" id="urbanflow.utils.poi_utils.point_to_cell">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">point_to_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.poi_utils.point_to_cell" title="Link to this definition">¶</a></dt>
-<dd><p>Convert a CRS-aligned point to (row, col).
-Raises ValueError if the point is outside the grid.</p>
+<dt class="sig sig-object py" id="urbanflow.logging_config.setup_logger">
+<span class="sig-prename descclassname"><span class="pre">urbanflow.logging_config.</span></span><span class="sig-name descname"><span class="pre">setup_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'urbanflow'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_string</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.logging_config.setup_logger" title="Link to this definition">¶</a></dt>
+<dd><p>Set up and configure a logger for the urbanflow package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>float</em>)</p></li>
-<li><p><strong>y</strong> (<em>float</em>)</p></li>
-<li><p><strong>transform</strong> (<em>Affine</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Tuple</em>[int, int]</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="urbanflow.utils.poi_utils.pois_to_grid_coords">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">pois_to_grid_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poi_gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_adjusted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_outside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">street_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.poi_utils.pois_to_grid_coords" title="Link to this definition">¶</a></dt>
-<dd><p>Map POI coordinates to grid indices AND snap them to the nearest
-‘door cell’ (street cell adjacent to a building).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>poi_gdf</strong> (GeoDataFrame       – must be in the same CRS as <em>transform</em>)</p></li>
-<li><p><strong>transform</strong> (<em>Affine           – from gdfs_to_grid / venice_grid</em>)</p></li>
-<li><p><strong>grid</strong> (<em>ndarray</em><em>[</em><em>uint8</em><em>]        </em><em>– the uint8 grid with state codes</em>)</p></li>
-<li><p><strong>keep_outside</strong> (<em>bool          – keep/drop POIs that fall outside grid</em>)</p></li>
-<li><p><strong>street_code</strong> (int – codes used in <em>grid</em>)</p></li>
-<li><p><strong>building_code</strong> (int – codes used in <em>grid</em>)</p></li>
-<li><p><strong>do_adjusted</strong> (<em>bool</em>)</p></li>
+<li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the logger. Defaults to “urbanflow”.</p></li>
+<li><p><strong>level</strong> (<em>int</em><em>, </em><em>optional</em>) – Logging level. If None, checks URBANFLOW_LOG_LEVEL environment variable,
+defaults to logging.INFO.</p></li>
+<li><p><strong>format_string</strong> (<em>str</em><em>, </em><em>optional</em>) – Custom format string for log messages. If None, uses a default format.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>row, col       integer indices of the original cell
-row_adj, col_adj  integer indices of the snapped door cell</p>
+<dd class="field-even"><p>Configured logger instance.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>GeoDataFrame  – original columns +</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="urbanflow.utils.poi_utils.pois_within_radius">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">pois_within_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poi_gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poi_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'distance_m'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefer_same_parish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.poi_utils.pois_within_radius" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>poi_gdf</strong> (<em>GeoDataFrame</em>) – Full POI table (must have ‘geometry’, ‘PP_Bottega_METACATEGORY’,
-and optionally ‘parish_std’).</p></li>
-<li><p><strong>poi_idx</strong> (<em>int</em>) – Row position of the central POI in <cite>poi_gdf</cite>.</p></li>
-<li><p><strong>meta_val</strong> (<em>str</em>) – Desired PP_Bottega_METACATEGORY value.</p></li>
-<li><p><strong>radius_m</strong> (<em>float</em>) – Search radius in metres.</p></li>
-<li><p><strong>distance_col</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name that will store computed centre-to-POI distances.</p></li>
-<li><p><strong>prefer_same_parish</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, results from the same parish (<cite>parish_std</cite>) as the centre
-POI are listed first (default False).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Matching POIs within radius, sorted by parish preference (if enabled)
-and then by straight-line distance.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>GeoDataFrame</p>
+<dd class="field-odd"><p>logging.Logger</p>
 </dd>
 </dl>
 </dd></dl>
@@ -352,23 +300,23 @@ and then by straight-line distance.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="urbanflow.utils.sommarioni_utils.html">
+          <a class="next-page" href="urbanflow.utils.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">urbanflow.utils.sommarioni_utils</div>
+                <div class="title">urbanflow.utils</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="urbanflow.utils.grid_utils.html">
+          <a class="prev-page" href="urbanflow.RasterGridWithPOIs.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">urbanflow.utils.grid_utils</div>
+                <div class="title">urbanflow.RasterGridWithPOIs</div>
                 
               </div>
             </a>
@@ -402,10 +350,8 @@ and then by straight-line distance.</p>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">urbanflow.utils.poi_utils</a><ul>
-<li><a class="reference internal" href="#urbanflow.utils.poi_utils.point_to_cell"><code class="docutils literal notranslate"><span class="pre">point_to_cell()</span></code></a></li>
-<li><a class="reference internal" href="#urbanflow.utils.poi_utils.pois_to_grid_coords"><code class="docutils literal notranslate"><span class="pre">pois_to_grid_coords()</span></code></a></li>
-<li><a class="reference internal" href="#urbanflow.utils.poi_utils.pois_within_radius"><code class="docutils literal notranslate"><span class="pre">pois_within_radius()</span></code></a></li>
+<li><a class="reference internal" href="#">urbanflow.logging_config</a><ul>
+<li><a class="reference internal" href="#urbanflow.logging_config.setup_logger"><code class="docutils literal notranslate"><span class="pre">setup_logger()</span></code></a></li>
 </ul>
 </li>
 </ul>

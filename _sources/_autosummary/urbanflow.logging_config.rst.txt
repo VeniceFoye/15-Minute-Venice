@@ -1,0 +1,12 @@
+urbanflow.logging\_config
+=========================
+
+.. automodule:: urbanflow.logging_config
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      setup_logger
+   

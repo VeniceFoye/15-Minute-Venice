@@ -12,4 +12,5 @@
 
    RasterGrid
    RasterGridWithPOIs
+   logging_config
    utils
