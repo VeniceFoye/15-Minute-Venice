@@ -8,12 +8,13 @@ with proper logging calls.
 
 import logging
 import sys
+import os
 from typing import Optional
 
 
 def setup_logger(
     name: str = "urbanflow",
-    level: int = logging.INFO,
+    level: Optional[int] = None,
     format_string: Optional[str] = None
 ) -> logging.Logger:
     """
@@ -24,7 +25,8 @@ def setup_logger(
     name : str, optional
         Name of the logger. Defaults to "urbanflow".
     level : int, optional
-        Logging level. Defaults to logging.INFO.
+        Logging level. If None, checks URBANFLOW_LOG_LEVEL environment variable,
+        defaults to logging.INFO.
     format_string : str, optional
         Custom format string for log messages. If None, uses a default format.
         
@@ -38,6 +40,19 @@ def setup_logger(
     # Avoid adding multiple handlers if logger is already configured
     if logger.handlers:
         return logger
+    
+    # Determine log level
+    if level is None:
+        # Check environment variable first
+        env_level = os.getenv('URBANFLOW_LOG_LEVEL', 'INFO').upper()
+        level_map = {
+            'DEBUG': logging.DEBUG,
+            'INFO': logging.INFO,
+            'WARNING': logging.WARNING,
+            'ERROR': logging.ERROR,
+            'CRITICAL': logging.CRITICAL
+        }
+        level = level_map.get(env_level, logging.INFO)
     
     # Set log level
     logger.setLevel(level)
