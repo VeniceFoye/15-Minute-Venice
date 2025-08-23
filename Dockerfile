@@ -24,6 +24,8 @@ RUN echo '. /opt/conda/etc/profile.d/conda.sh' >  /etc/profile.d/activate_urbanf
     echo 'conda activate urbanflow'           >> /etc/profile.d/activate_urbanflow.sh && \
     chmod +x /etc/profile.d/activate_urbanflow.sh
 
+RUN echo "conda activate urbanflow" >> /root/.bashrc
+
 RUN python -m pip install --upgrade pip
 
 COPY . .
