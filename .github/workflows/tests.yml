@@ -38,7 +38,7 @@ jobs:
 
       - name: Verify C++ extension import
         run: |
-         python - <<'PY'
+          python - <<'PY'
           try:
               import urbanflow.cpp.path_planner as m
               print("path_planner OK:", m.__file__)
