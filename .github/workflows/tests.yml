@@ -2,7 +2,7 @@ name: tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, code/git_jobs_fix ]
   pull_request:
 
 permissions:
@@ -44,7 +44,6 @@ jobs:
           # If NOT already declared in [project].dependencies, uncomment:
           # pip install rasterio scipy
 
-      # (Optional) Quick sanity check that the pybind module was built & importable
       - name: Verify C++ extension import
         run: |
           python - <<'PY'
