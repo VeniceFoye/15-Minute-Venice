@@ -1,9 +1,6 @@
 name: tests
 
-on:
-  push:
-    branches: [ main, code/git_jobs_fix ]
-  pull_request:
+on: [push, fork]
 
 permissions:
   contents: read
