@@ -58,7 +58,7 @@ jobs:
 
       - name: Enforce 100% coverage
         run: |
-          python check_coverage.py
+          python tests/check_coverage.py
         continue-on-error: false
 
       - name: Upload test reports (always)
