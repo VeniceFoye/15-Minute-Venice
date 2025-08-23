@@ -42,8 +42,13 @@ Typical usage
 
 from .RasterGrid import RasterGrid
 from .utils.poi_utils import pois_to_grid_coords
-from urbanflow.cpp.path_planner import path_between_pois
 from typing import Dict, Tuple
+
+# Import C++ extension conditionally
+try:
+    from urbanflow.cpp.path_planner import path_between_pois
+except ModuleNotFoundError:
+    path_between_pois = None
 import numpy as np
 
 import matplotlib.pyplot as plt

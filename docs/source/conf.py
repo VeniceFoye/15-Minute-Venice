@@ -23,13 +23,9 @@ copyright = f"{datetime.now():%Y}, {author}"
 # -- General configuration ---------------------------------------------------
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
+    "sphinx.ext.autosummary", 
     "sphinx.ext.napoleon",
-    "sphinx.ext.intersphinx",   # <-- required for intersphinx_mapping
-    "sphinx.ext.viewcode",
-    "sphinx_autodoc_typehints",
     "myst_parser",
-    "sphinx_copybutton",
 ]
 
 autosummary_generate = True          # create stubs automatically
