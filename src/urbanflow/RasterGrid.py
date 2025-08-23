@@ -6,6 +6,7 @@ from PIL import Image
 
 from .utils.grid_utils import instantiate_grid_and_transform, rasterize_geoms
 from .utils.courtyard_utils import add_auto_courtyards
+from .logging_config import logger
 
 # DEFAULT_VENICE_LEGEND = {"ocean" : 0, "street" : 1, "building" : 2, "canal" : 3, "courtyard" : 4}
 
@@ -99,7 +100,7 @@ class RasterGrid:
 
         for i, current_layer in enumerate(layers):
             if current_layer.crs != coordinate_reference_system:
-                print(f"WARNING! {LAYER_INDEXES_TO_NAMES[i]} layer not in {coordinate_reference_system}. Converting now.")
+                logger.warning(f"{LAYER_INDEXES_TO_NAMES[i]} layer not in {coordinate_reference_system}. Converting now.")
                 layers[i] = current_layer.to_crs(coordinate_reference_system)
         # Create the grid
         grid, transform = instantiate_grid_and_transform(cell_size, layers, default_grid_value = legend["ocean"])
@@ -117,10 +118,10 @@ class RasterGrid:
             # Add couryards
             rasterize_geoms(layers[3].geometry, legend['courtyard'], grid, transform)
         else:
-            print("No manual courtyards found.")
+            logger.info("No manual courtyards found.")
 
         if auto_courtyards:
-            print("Adding automatic courtyards. . .")
+            logger.info("Adding automatic courtyards. . .")
             grid = add_auto_courtyards(grid, empty_code=legend['ocean'], courtyard_code=legend['courtyard'])
             
         # Assign the Filled-In Grid

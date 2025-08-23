@@ -4,6 +4,7 @@ sommarioni_utils.py
 Util functions to process 1808 Sommarioni Cadaster
 """
 import geopandas as gpd
+from ..logging_config import logger
 
 
 def load_sommarioni_layers(
@@ -60,7 +61,7 @@ def load_sommarioni_layers(
     if path.split(".")[-1] == "feather":
         gdf = gpd.read_feather(path)
     else:
-        print(path)
+        logger.debug(f"Loading file from path: {path}")
         gdf = gpd.read_file(path)
 
 
