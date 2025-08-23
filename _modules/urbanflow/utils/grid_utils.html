@@ -295,10 +295,10 @@
 <span class="sd">    - The origin of the transform is the upper-left corner.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Find union bounds</span>
-    <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">_union_bounds</span><span class="p">(</span><span class="o">*</span><span class="n">gdfs</span><span class="p">)</span>
+    <span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">_union_bounds</span><span class="p">(</span><span class="o">*</span><span class="n">gdfs</span><span class="p">)</span>
 
     <span class="c1"># Snap extent to whole cells</span>
-    <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">_snap_extent</span><span class="p">(</span><span class="n">cell_size</span><span class="p">,</span> <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span>
+    <span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">_snap_extent</span><span class="p">(</span><span class="n">cell_size</span><span class="p">,</span> <span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span><span class="p">)</span>
 
     <span class="c1"># Find number of cols and rows</span>
     <span class="n">cols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">max_x</span> <span class="o">-</span> <span class="n">min_x</span><span class="p">)</span> <span class="o">/</span> <span class="n">cell_size</span><span class="p">)</span>
@@ -316,35 +316,32 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_union_bounds</span><span class="p">(</span><span class="o">*</span><span class="n">gdfs</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Snap bounding box coordinates to a multiple of the grid cell size.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    cell_size : float</span>
-<span class="sd">        Size of a grid cell in coordinate units.</span>
-<span class="sd">    min_x, max_x, min_y, max_y : float</span>
-<span class="sd">        Original bounding box coordinates.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    min_x, min_y, max_x, max_y : tuple of float</span>
-<span class="sd">        Adjusted bounding box coordinates aligned to the grid cell size.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    - The minimum bounds are floored to the nearest multiple of ``cell_size``.</span>
-<span class="sd">    Compute the union of the bounding boxes of one or more GeoDataFrames.</span>
+<span class="sd">    Compute the union of bounding boxes for one or more GeoDataFrames.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    *gdfs : geopandas.GeoDataFrame</span>
-<span class="sd">        One or more GeoDataFrames whose bounds will be combined.</span>
+<span class="sd">        One or more GeoDataFrames whose bounds will be combined. `None` values</span>
+<span class="sd">        and empty frames are ignored.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    min_x, min_y, max_x, max_y : tuple of float</span>
-<span class="sd">        The minimum and maximum x and y coordinates of the unioned bounding box.</span>
+<span class="sd">    min_x, max_x, min_y, max_y : tuple of float</span>
+<span class="sd">        Unioned extent, returned as (min_x, max_x, min_y, max_y).</span>
+<span class="sd">        This ordering matches callers that expect x-extents first, then y-extents.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If no non-empty GeoDataFrames are provided.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; ub = _union_bounds(gdf1, gdf2)</span>
+<span class="sd">    &gt;&gt;&gt; ub</span>
+<span class="sd">    (0.0, 2.0, 0.0, 2.0)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">gdfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">total_bounds</span>
     <span class="k">for</span> <span class="n">gdf</span> <span class="ow">in</span> <span class="n">gdfs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">total_bounds</span>
@@ -354,7 +351,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_snap_extent</span><span class="p">(</span>
-    <span class="n">cell_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">min_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">min_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_y</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">cell_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">min_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="n">min_y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_y</span><span class="p">:</span> <span class="nb">float</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Snap bounding box coordinates to a multiple of the grid cell size.</span>
@@ -368,7 +365,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    min_x, max_x, min_y, max_y : tuple of float</span>
+<span class="sd">    min_x, min_y, max_x, max_y : tuple of float</span>
 <span class="sd">        Adjusted bounding box coordinates aligned to the grid cell size.</span>
 
 <span class="sd">    Notes</span>
@@ -381,7 +378,7 @@
     <span class="n">max_x</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">max_x</span> <span class="o">/</span> <span class="n">cell_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell_size</span>
     <span class="n">max_y</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">max_y</span> <span class="o">/</span> <span class="n">cell_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell_size</span>
 
-    <span class="k">return</span> <span class="n">min_x</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_y</span>
+    <span class="k">return</span> <span class="n">min_x</span><span class="p">,</span> <span class="n">min_y</span><span class="p">,</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span>
 
 
 <div class="viewcode-block" id="rasterize_geoms">
