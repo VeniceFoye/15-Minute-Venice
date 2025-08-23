@@ -42,6 +42,7 @@ Typical usage
 
 from .RasterGrid import RasterGrid
 from .utils.poi_utils import pois_to_grid_coords
+from .logging_config import logger
 from typing import Dict, Tuple
 
 # Import C++ extension conditionally
@@ -108,13 +109,13 @@ class RasterGridWithPOIs(RasterGrid):
         super().__init__(coordinate_reference_system, cell_size)
 
         if POI_gdf.crs != self.coordinate_reference_system:
-            print(
-                f"Warning! POI GeoDataFrame not in CRS {self.coordinate_reference_system}. Changing to that CRS now."
+            logger.warning(
+                f"POI GeoDataFrame not in CRS {self.coordinate_reference_system}. Changing to that CRS now."
             )
             POI_gdf = POI_gdf.to_crs(self.coordinate_reference_system)
         
         if 'uid' in POI_gdf.columns:
-            print(f"Setting column `uid` to be the index column for the POI_gdf.")
+            logger.info("Setting column `uid` to be the index column for the POI_gdf.")
             POI_gdf = POI_gdf.set_index("uid")
 
         self.POI_gdf = POI_gdf
@@ -160,17 +161,17 @@ class RasterGridWithPOIs(RasterGrid):
         new_RasterGridWithPOIs.transform = copy(raster_grid.transform)
         new_RasterGridWithPOIs.legend = copy(raster_grid.legend)
 
-        print("Aligning POI_gdf to Grid . . .")
+        logger.info("Aligning POI_gdf to Grid . . .")
         if (
             "row" in new_RasterGridWithPOIs.POI_gdf.columns
             and "col" in new_RasterGridWithPOIs.POI_gdf.columns
             and not do_adjusted
         ):
-            print(
+            logger.info(
                 "POI_gdf already contains 'row' and 'col' columns. Skipping coordinate assignment."
             )
             if force_realignment and not do_adjusted:
-                print("force_realignment is True. Aligning anyway.")
+                logger.info("force_realignment is True. Aligning anyway.")
                 new_RasterGridWithPOIs.POI_gdf = pois_to_grid_coords(
                     poi_gdf=new_RasterGridWithPOIs.POI_gdf,
                     transform=new_RasterGridWithPOIs.transform,
@@ -194,11 +195,11 @@ class RasterGridWithPOIs(RasterGrid):
             and "col_adj" in new_RasterGridWithPOIs.POI_gdf.columns
             and do_adjusted
         ):
-            print(
+            logger.info(
                 "POI_gdf already contains 'row_adj' and 'col_adj' columns. Skipping coordinate assignment."
             )
             if force_realignment and do_adjusted:
-                print("force_realignment is True. Aligning anyway.")
+                logger.info("force_realignment is True. Aligning anyway.")
                 new_RasterGridWithPOIs.POI_gdf = pois_to_grid_coords(
                     poi_gdf=new_RasterGridWithPOIs.POI_gdf,
                     transform=new_RasterGridWithPOIs.transform,
@@ -397,7 +398,7 @@ class RasterGridWithPOIs(RasterGrid):
 
         if 'row_adj' in poi_gdf.columns:
             if do_logging:
-                print("Using adjusted row and col values")
+                logger.info("Using adjusted row and col values")
 
             source_poi_r = source_poi['row_adj']
             source_poi_c = source_poi['col_adj']
@@ -406,7 +407,7 @@ class RasterGridWithPOIs(RasterGrid):
             target_poi_c = target_poi['col_adj']
         else:
             if do_logging:
-                print("Warning! Using NON adjusted row and col values")
+                logger.warning("Using NON adjusted row and col values")
 
             source_poi_r = source_poi['row']
             source_poi_c = source_poi['col']

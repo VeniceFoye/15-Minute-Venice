@@ -4,12 +4,15 @@ from importlib import import_module
 from .RasterGrid import RasterGrid
 from .RasterGridWithPOIs import RasterGridWithPOIs
 
+# Set up logging
+from .logging_config import logger
+
 # Try loading the compiled extension lazily
 try:
     path_planner = import_module("urbanflow.cpp.path_planner")
     path_between_pois = path_planner.path_between_pois
 except ModuleNotFoundError:   # editable-install before build?
-    print("No path planner found.")
+    logger.warning("No path planner found.")
     path_between_pois = None
 
 __all__ = [
