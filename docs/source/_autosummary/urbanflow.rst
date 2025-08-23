@@ -12,5 +12,4 @@
 
    RasterGrid
    RasterGridWithPOIs
-   cpp
    utils
