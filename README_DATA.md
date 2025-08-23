@@ -12,18 +12,55 @@ needs = gpd.read_feather("needs_no_duplicates.feather")
 
 
 ## The Data Files
-- `grid_with_legend.npz`: an npz file that has two keys: `grid` and `legend`. This is a rasterization of the 1808 Cadaster map into grid squares of 1x1 meter. It uses the following legend: 
-    + 0 = ocean   (background)
-    + 1 = street
-    + 2 = building      
-    + 3 = canal         
-    + 4 = courtyard
 
-- `catastici_adjusted_feather.feather`: The Catastici dataset, with the `row_adj` and `col_adj` columns, which are the rows and columns on the `grid` of the point, when snapped to the nearest building-street intersection. Deprecated by `needs_no_duplicates.feather`
--`needs_no_duplicates.feather`: The Catastici dataset, except with information about the different classes' needs, tenancy, and ownership.
-- **The three "paths" zip files**: These directories contain the paths of a single parish of all the houses to their respective tenants' needs.  The different paths take the form of `.npz` files with `row` and `column` keys to indicate the steps of a single path.  These directories each have a `connection_index.csv`, which has information about each path:
-    + The origin CASA `uid`
-    + The origin type (I believe only CASA right now)
-    + The target `uid`
-    + The target type (this is the mid-level, standardized bottega function)
-- `bottega_needs_by_class.feather`: This has a row for every Bottega type, and three columns for every class, indicating whether or not this class needs this specific bottega type. 
+This section describes the saved data formats for Urbanflow's main data types: `RasterGrid` and `RasterGridWithPOIs`.
+
+### RasterGrid Saved Format
+
+`RasterGrid` objects are saved as compressed `.npz` files using `numpy.savez_compressed()`. The file contains the following keys:
+
+- **`grid`**: 2D numpy array (uint8) containing the rasterized urban morphology data
+- **`transform`**: Affine transformation matrix for mapping grid indices (row, col) to spatial coordinates
+- **`legend`**: Dictionary mapping feature types to integer codes, typically:
+    + 0 = ocean (background)
+    + 1 = street
+    + 2 = building
+    + 3 = canal
+    + 4 = courtyard
+- **`cell_size`**: Grid resolution in coordinate units (e.g., meters)
+- **`coordinate_reference_system`**: Coordinate reference system string (e.g., "EPSG:32633")
+
+**Loading a RasterGrid:**
+```python
+import urbanflow
+raster_grid = urbanflow.RasterGrid.load("path/to/raster_grid.npz")
+```
+
+### RasterGridWithPOIs Saved Format
+
+`RasterGridWithPOIs` objects are saved as a **directory** containing multiple files:
+
+#### Directory Structure:
+- **`poi_gdf.parquet.gzip`**: Compressed Parquet file containing the Points of Interest (POI) GeoDataFrame
+- **`raster_grid_with_pois_filepath.npz`**: Compressed NPZ file containing all RasterGrid data plus POI file reference
+
+#### NPZ File Contents:
+- **`grid`**: 2D numpy array (uint8) with rasterized urban morphology
+- **`transform`**: Affine transformation matrix
+- **`legend`**: Feature type to integer code mapping
+- **`cell_size`**: Grid resolution in coordinate units
+- **`coordinate_reference_system`**: CRS string
+- **`POI_gdf_filepath`**: Path to the POI Parquet file
+
+#### POI GeoDataFrame Columns:
+The POI data includes geometry and grid coordinate columns:
+- **`geometry`**: Point geometries of POIs
+- **`row`**, **`col`**: Grid cell coordinates for each POI
+- **`row_adj`**, **`col_adj`**: Adjusted coordinates (snapped to nearest street-building intersection)
+- Additional columns depend on the original POI data
+
+**Loading a RasterGridWithPOIs:**
+```python
+import urbanflow
+raster_grid_with_pois = urbanflow.RasterGridWithPOIs.load("path/to/directory")
+``` 
