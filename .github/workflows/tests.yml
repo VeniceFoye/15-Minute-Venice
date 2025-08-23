@@ -1,9 +1,6 @@
 name: tests
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
+on: [push, fork]
 
 permissions:
   contents: read
@@ -27,21 +24,35 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: "pip"
 
-      # Optional but recommended for scikit-build/pybind11 projects
-      - name: Install build tools (cmake/ninja)
+      - name: Upgrade pip and install build tools
         run: |
           python -m pip install --upgrade pip
           pip install cmake ninja
 
-      - name: Install package + test deps
+      # If rasterio/scipy aren't in your pyproject deps yet, either add them there
+      # or keep this explicit install to ensure tests have what they need.
+      - name: Install package and test deps (build C++ extension)
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: "2"
+          SKBUILD_CMAKE_ARGS: "-DCMAKE_BUILD_TYPE=Release"
         run: |
+          # Installs your package in editable mode and dev deps from pyproject
           pip install -e .[dev]
+          # If NOT already declared in [project].dependencies, uncomment:
+          # pip install rasterio scipy
 
-
-      # If importing your package at collection-time needs environment hints,
-      # set them here (optional).
-      # - name: Set test env
-      #   run: echo "ENV_VAR=1" >> $GITHUB_ENV
+      - name: Verify C++ extension import
+        run: |
+          python - <<'PY'
+          try:
+              import urbanflow.cpp.path_planner as m
+              print("path_planner OK:", m.__file__)
+          except Exception as e:
+              import sys, traceback
+              print("Failed to import urbanflow.cpp.path_planner:", e, file=sys.stderr)
+              traceback.print_exc()
+              sys.exit(1)
+          PY
 
       - name: Run tests
         run: |

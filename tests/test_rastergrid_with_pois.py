@@ -55,19 +55,14 @@ def test_save_load(tmp_path, monkeypatch):
     assert np.array_equal(loaded.grid, rgp.grid)
 
 
-def test_compute_path_between_POIs_wrapper(monkeypatch):
+def test_compute_path_between_POIs_wrapper():
     """
     Test that compute_path_between_POIs correctly wraps the underlying pathfinding function.
 
-    - Monkeypatch path_between_pois with a fake implementation returning just start/end coords.
     - Call compute_path_between_POIs between POI 'A' and 'B'.
     - Assert that the wrapper returns exactly the fake path output.
     """
     rgp = make_rg_with_pois()
-
-    def fake_path(grid, sr, sc, tr, tc):
-        return np.array([sr,tr]), np.array([sc,tc])
-    monkeypatch.setattr("urbanflow.RasterGridWithPOIs.path_between_pois", fake_path, raising=False)
     
     r, c = rgp.compute_path_between_POIs("A","B")
     assert r.tolist() == [1,0]
