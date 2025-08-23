@@ -170,3 +170,137 @@ def test_pois_within_radius(tmp_path):
     gdf_wgs = gdf.to_crs('EPSG:4326')
     res2 = pois_within_radius(gdf_wgs, 0, 'X', 1500)
     assert len(res2) == 2
+
+
+def test_pois_to_grid_coords_empty():
+    """Test pois_to_grid_coords with empty POI dataframe."""
+    # Create empty POI dataframe
+    empty_poi_gdf = gpd.GeoDataFrame({'geometry': []}, crs='EPSG:32633')
+    grid = np.ones((3, 3), dtype=np.uint8)
+    transform = Affine(1, 0, 0, 0, -1, 3)
+    
+    # This should trigger lines 70-72 (empty POI handling)
+    result = pois_to_grid_coords(
+        poi_gdf=empty_poi_gdf,
+        transform=transform,
+        grid=grid,
+        do_adjusted=True,
+        street_code=1,
+        building_code=2
+    )
+    
+    assert len(result) == 0
+    assert 'row_adj' in result.columns
+    assert 'col_adj' in result.columns
+
+
+
+def test_pois_within_radius_index_error():
+    """Test pois_within_radius with invalid index."""
+    poi_gdf = gpd.GeoDataFrame({
+        'geometry': [Point(0, 0), Point(1, 1)],
+        'PP_Bottega_METACATEGORY': ['A', 'B']
+    }, crs='EPSG:32633')
+    
+    # This should trigger line 155 (IndexError for out of range index)
+    with pytest.raises(IndexError, match="poi_idx out of range"):
+        pois_within_radius(poi_gdf, poi_idx=5, meta_val='A', radius_m=100)  # Index 5 doesn't exist
+
+
+
+def test_sommarioni_utils_load_function():
+    """Test load_sommarioni_layers function."""
+    # Create a temporary GeoJSON file for testing
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.geojson', delete=False) as f:
+        # Create test data in EPSG:32633 coordinates 
+        test_data = {
+            "type": "FeatureCollection",
+            "crs": {"type": "name", "properties": {"name": "EPSG:32633"}},
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {"geometry_type": "building"},
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[[600000, 5000000], [600001, 5000000], [600001, 5000001], [600000, 5000001], [600000, 5000000]]]
+                    }
+                },
+                {
+                    "type": "Feature", 
+                    "properties": {"geometry_type": "street"},
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[[600001, 5000000], [600002, 5000000], [600002, 5000001], [600001, 5000001], [600001, 5000000]]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {"geometry_type": "water"},
+                    "geometry": {
+                        "type": "Polygon", 
+                        "coordinates": [[[600000, 5000001], [600001, 5000001], [600001, 5000002], [600000, 5000002], [600000, 5000001]]]
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {"geometry_type": "courtyard"},
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [[[600002, 5000001], [600003, 5000001], [600003, 5000002], [600002, 5000002], [600002, 5000001]]]
+                    }
+                }
+            ]
+        }
+        
+        import json
+        json.dump(test_data, f)
+        temp_path = f.name
+    
+    try:
+        # This should trigger lines 61-76 (entire load_sommarioni_layers function)
+        buildings, streets, canals, courtyards = load_sommarioni_layers(temp_path)
+        
+        assert len(buildings) == 1
+        assert len(streets) == 1
+        assert len(canals) == 1
+        assert len(courtyards) == 1
+        # The function should convert to target_crs (EPSG:32633 by default)
+        assert buildings.crs.to_string() == 'EPSG:32633'
+        
+    finally:
+        # Clean up
+        os.unlink(temp_path)
+
+
+def test_sommarioni_utils_feather_path():
+    """Test load_sommarioni_layers with feather file extension."""
+    # Create a temporary feather file for testing
+    with tempfile.NamedTemporaryFile(suffix='.feather', delete=False) as f:
+        temp_path = f.name
+    
+    # Create test GeoDataFrame
+    test_gdf = gpd.GeoDataFrame({
+        'geometry_type': ['building', 'street', 'water', 'courtyard'],
+        'geometry': [
+            Polygon([(0, 0), (1, 0), (1, 1), (0, 1)]),
+            Polygon([(1, 0), (2, 0), (2, 1), (1, 1)]),
+            Polygon([(0, 1), (1, 1), (1, 2), (0, 2)]),
+            Polygon([(2, 1), (3, 1), (3, 2), (2, 2)])
+        ]
+    }, crs='EPSG:4326')
+    
+    try:
+        # Save as feather
+        test_gdf.to_feather(temp_path)
+        
+        # This should trigger the feather file path (line 61-62)
+        buildings, streets, canals, courtyards = load_sommarioni_layers(temp_path)
+        
+        assert len(buildings) == 1
+        assert len(streets) == 1
+        assert len(canals) == 1 
+        assert len(courtyards) == 1
+        
+    finally:
+        # Clean up
+        os.unlink(temp_path)

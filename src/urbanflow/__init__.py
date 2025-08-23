@@ -5,7 +5,7 @@ from .RasterGrid import RasterGrid
 from .RasterGridWithPOIs import RasterGridWithPOIs
 
 # Set up logging
-from .logging_config import logger
+from .logging_config import logger, setup_logger
 
 # Try loading the compiled extension lazily
 try:

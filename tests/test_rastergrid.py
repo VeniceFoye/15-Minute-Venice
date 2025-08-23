@@ -70,3 +70,83 @@ def test_from_geojson_dataframes():
     assert rg.grid.shape == (2,2)
     assert set(np.unique(rg.grid)) <= set(rg.legend.values())
 
+
+def test_rastergrid_crs_conversion():
+    """Test RasterGrid CRS conversion warning and code path."""
+    # Create test data in different CRS
+    buildings = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])]}, 
+        crs='EPSG:4326'  # WGS84, different from target
+    )
+    streets = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(1, 0), (2, 0), (2, 1), (1, 1)])]}, 
+        crs='EPSG:4326'
+    )
+    canals = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(0, 1), (1, 1), (1, 2), (0, 2)])]}, 
+        crs='EPSG:4326'
+    )
+    
+    # This should trigger the CRS conversion warning and code path (lines 103-104)
+    rg = RasterGrid.from_geojson_dataframes(
+        buildings, streets, canals, 
+        coordinate_reference_system='EPSG:32633',  # UTM zone 33N
+        cell_size=100,  # larger cell size for lat/lon to UTM conversion
+        auto_courtyards=False
+    )
+    
+    assert rg.grid.shape[0] > 0
+    assert rg.coordinate_reference_system == 'EPSG:32633'
+
+
+def test_rastergrid_no_courtyards_message():
+    """Test RasterGrid logging when no courtyards are provided."""
+    buildings = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])]}, 
+        crs='EPSG:32633'
+    )
+    streets = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(1, 0), (2, 0), (2, 1), (1, 1)])]}, 
+        crs='EPSG:32633'
+    )
+    canals = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(0, 1), (1, 1), (1, 2), (0, 2)])]}, 
+        crs='EPSG:32633'
+    )
+    
+    # This should trigger line 121: "No manual courtyards found."
+    rg = RasterGrid.from_geojson_dataframes(
+        buildings, streets, canals, 
+        courtyards=None,  # Explicitly no courtyards
+        auto_courtyards=False,
+        cell_size=1
+    )
+    
+    assert rg.grid.shape == (2, 2)
+
+
+def test_rastergrid_auto_courtyards():
+    """Test RasterGrid with auto_courtyards enabled."""
+    buildings = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(0, 0), (1, 0), (1, 1), (0, 1)])]}, 
+        crs='EPSG:32633'
+    )
+    streets = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(1, 0), (2, 0), (2, 1), (1, 1)])]}, 
+        crs='EPSG:32633'
+    )
+    canals = gpd.GeoDataFrame(
+        {'geometry': [Polygon([(0, 1), (1, 1), (1, 2), (0, 2)])]}, 
+        crs='EPSG:32633'
+    )
+    
+    # This should trigger lines 124-125: auto courtyard logging and processing
+    rg = RasterGrid.from_geojson_dataframes(
+        buildings, streets, canals, 
+        courtyards=None,
+        auto_courtyards=True,  # Enable auto courtyards
+        cell_size=1
+    )
+    
+    assert rg.grid.shape == (2, 2)
+
