@@ -9,7 +9,6 @@
         <title>urbanflow.utils.grid_utils - 15-Minute-Venice 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -277,13 +276,13 @@
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="urbanflow.utils.grid_utils.cell_to_polygon">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.grid_utils.</span></span><span class="sig-name descname"><span class="pre">cell_to_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/utils/grid_utils.html#cell_to_polygon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.utils.grid_utils.cell_to_polygon" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.grid_utils.</span></span><span class="sig-name descname"><span class="pre">cell_to_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.grid_utils.cell_to_polygon" title="Link to this definition">¶</a></dt>
 <dd><p>Convert a raster cell index to its polygon footprint in spatial coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>row</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Row index of the cell.</p></li>
-<li><p><strong>col</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Column index of the cell.</p></li>
+<li><p><strong>row</strong> (<em>int</em>) – Row index of the cell.</p></li>
+<li><p><strong>col</strong> (<em>int</em>) – Column index of the cell.</p></li>
 <li><p><strong>transform</strong> (<em>affine.Affine</em>) – Affine transform mapping raster indices to spatial coordinates.</p></li>
 </ul>
 </dd>
@@ -304,25 +303,25 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="urbanflow.utils.grid_utils.instantiate_grid_and_transform">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.grid_utils.</span></span><span class="sig-name descname"><span class="pre">instantiate_grid_and_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdfs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_grid_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/utils/grid_utils.html#instantiate_grid_and_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.utils.grid_utils.instantiate_grid_and_transform" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.grid_utils.</span></span><span class="sig-name descname"><span class="pre">instantiate_grid_and_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gdfs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_grid_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.grid_utils.instantiate_grid_and_transform" title="Link to this definition">¶</a></dt>
 <dd><p>Instantiate a raster grid and affine transform covering the extent of given geometries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cell_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Resolution of grid cells in coordinate units (e.g., meters).</p></li>
-<li><p><strong>gdfs</strong> (<a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v1.1.1)"><em>geopandas.GeoDataFrame</em></a><em> or </em><em>sequence</em><em> of </em><em>GeoDataFrame</em>) – One or more GeoDataFrames whose geometries define the spatial extent of the grid.</p></li>
-<li><p><strong>default_grid_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Initial value used to fill all cells, by default <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p><strong>cell_size</strong> (<em>float</em>) – Resolution of grid cells in coordinate units (e.g., meters).</p></li>
+<li><p><strong>gdfs</strong> (<em>geopandas.GeoDataFrame</em><em> or </em><em>sequence</em><em> of </em><em>GeoDataFrame</em>) – One or more GeoDataFrames whose geometries define the spatial extent of the grid.</p></li>
+<li><p><strong>default_grid_value</strong> (<em>int</em><em>, </em><em>optional</em>) – Initial value used to fill all cells, by default <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>], <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">uint8</span></code>]], <code class="xref py py-class docutils literal notranslate"><span class="pre">Affine</span></code>]</span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><strong>grid</strong> (<em>ndarray of uint8, shape (rows, cols)</em>) – Raster grid array initialized with <code class="docutils literal notranslate"><span class="pre">default_grid_value</span></code>.</p></li>
 <li><p><strong>transform</strong> (<em>affine.Affine</em>) – Affine transform mapping raster indices (row, col) to spatial coordinates.</p></li>
 </ul>
 </p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tuple</em>[<em>ndarray</em>[tuple[<em>Any</em>, …], <em>dtype</em>[<em>uint8</em>]], <em>Affine</em>]</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -335,13 +334,13 @@ grid completely covers the union of input bounds.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="urbanflow.utils.grid_utils.rasterize_geoms">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.grid_utils.</span></span><span class="sig-name descname"><span class="pre">rasterize_geoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/utils/grid_utils.html#rasterize_geoms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.utils.grid_utils.rasterize_geoms" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.grid_utils.</span></span><span class="sig-name descname"><span class="pre">rasterize_geoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.grid_utils.rasterize_geoms" title="Link to this definition">¶</a></dt>
 <dd><p>Rasterize geometries into an existing array (in-place).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>geoms</strong> (<em>iterable</em><em> of </em><em>shapely.geometry.BaseGeometry</em>) – Geometries to rasterize.</p></li>
-<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Integer value to burn into cells touched by the geometries.</p></li>
+<li><p><strong>value</strong> (<em>int</em>) – Integer value to burn into cells touched by the geometries.</p></li>
 <li><p><strong>out</strong> (<em>ndarray</em>) – Target raster array that will be modified in place.</p></li>
 <li><p><strong>transform</strong> (<em>affine.Affine</em>) – Affine transform mapping raster indices (row, col) to spatial coordinates.</p></li>
 </ul>
@@ -430,7 +429,5 @@ grid completely covers the union of input bounds.</p></li>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
-    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

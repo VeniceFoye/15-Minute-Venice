@@ -9,7 +9,6 @@
         <title>urbanflow.RasterGrid - 15-Minute-Venice 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -259,8 +258,8 @@
 <h1>urbanflow.RasterGrid<a class="headerlink" href="#urbanflow-rastergrid" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="urbanflow.RasterGrid">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">urbanflow.</span></span><span class="sig-name descname"><span class="pre">RasterGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinate_reference_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:32633'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/RasterGrid.html#RasterGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.RasterGrid" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">urbanflow.</span></span><span class="sig-name descname"><span class="pre">RasterGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinate_reference_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:32633'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.RasterGrid" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>RasterGrid class. Stores the following information:
 1. <cite>grid</cite>: an np.ndarray[np.uint8] with unsigned integer values.
 2. <cite>transform</cite> an Affine transform object to transform points onto the grid
@@ -268,8 +267,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinate_reference_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
-<li><p><strong>cell_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>)</p></li>
+<li><p><strong>coordinate_reference_system</strong> (<em>str</em>)</p></li>
+<li><p><strong>cell_size</strong> (<em>float</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -279,7 +278,7 @@
 <dd><p>Square cell width/height in CRS units</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)">float</a></p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -291,7 +290,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="urbanflow.RasterGrid.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><a class="reference internal" href="../_modules/urbanflow/RasterGrid.html#RasterGrid.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.RasterGrid.__init__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><a class="headerlink" href="#urbanflow.RasterGrid.__init__" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>constructor</p>
@@ -321,13 +320,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinate_reference_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:32633'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/RasterGrid.html#RasterGrid.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinate_reference_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:32633'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
 <dd><p>Constructor given a grid, transform, and legend</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cell_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Square cell width/height in CRS units. Defaults to 1</p></li>
-<li><p><strong>coordinate_reference_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Name of the CRS of this grid. Defaults to EPSG:32633.</p></li>
+<li><p><strong>cell_size</strong> (<em>float</em>) – Square cell width/height in CRS units. Defaults to 1</p></li>
+<li><p><strong>coordinate_reference_system</strong> (<em>str</em>) – Name of the CRS of this grid. Defaults to EPSG:32633.</p></li>
 </ul>
 </dd>
 </dl>
@@ -357,7 +356,7 @@
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="urbanflow.RasterGrid.from_geojson_dataframes">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_geojson_dataframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buildings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canals</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">courtyards</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_courtyards</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_reference_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:32633'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'building':</span> <span class="pre">2,</span> <span class="pre">'canal':</span> <span class="pre">3,</span> <span class="pre">'courtyard':</span> <span class="pre">4,</span> <span class="pre">'ocean':</span> <span class="pre">0,</span> <span class="pre">'street':</span> <span class="pre">1}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/RasterGrid.html#RasterGrid.from_geojson_dataframes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.RasterGrid.from_geojson_dataframes" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_geojson_dataframes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buildings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">streets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">canals</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">courtyards</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_courtyards</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_reference_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:32633'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'building':</span> <span class="pre">2,</span> <span class="pre">'canal':</span> <span class="pre">3,</span> <span class="pre">'courtyard':</span> <span class="pre">4,</span> <span class="pre">'ocean':</span> <span class="pre">0,</span> <span class="pre">'street':</span> <span class="pre">1}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.RasterGrid.from_geojson_dataframes" title="Link to this definition">¶</a></dt>
 <dd><p>Rasterize buildings, streets, and canals of Venice into a RasterGrid.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -365,15 +364,15 @@
 <li><p><strong>buildings</strong> (<em>GeoDataFrames</em>) – All must share the <strong>same CRS</strong>.</p></li>
 <li><p><strong>streets</strong> (<em>GeoDataFrames</em>) – All must share the <strong>same CRS</strong>.</p></li>
 <li><p><strong>canals</strong> (<em>GeoDataFrames</em>) – All must share the <strong>same CRS</strong>.</p></li>
-<li><p><strong>cell_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Square cell width/height in CRS units.</p></li>
-<li><p><strong>legend</strong> (<em>Dict</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>]</em>) – A python dict that contains what cell values contian what. The dict must define:
+<li><p><strong>cell_size</strong> (<em>float</em>) – Square cell width/height in CRS units.</p></li>
+<li><p><strong>legend</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em>) – A python dict that contains what cell values contian what. The dict must define:
 “ocean” : (default 0)
 “street” : (default 1)
 “building” : default 2)
 “canal” : (default 3)</p></li>
-<li><p><strong>courtyards</strong> (<a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v1.1.1)"><em>GeoDataFrame</em></a>)</p></li>
-<li><p><strong>auto_courtyards</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>)</p></li>
-<li><p><strong>coordinate_reference_system</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p></li>
+<li><p><strong>courtyards</strong> (<em>GeoDataFrame</em>)</p></li>
+<li><p><strong>auto_courtyards</strong> (<em>bool</em>)</p></li>
+<li><p><strong>coordinate_reference_system</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -384,30 +383,30 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="urbanflow.RasterGrid.load">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/RasterGrid.html#RasterGrid.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.RasterGrid.load" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.RasterGrid.load" title="Link to this definition">¶</a></dt>
 <dd><p>Create a RasterGrid object from a .npz compressed file.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="urbanflow.RasterGrid.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/RasterGrid.html#RasterGrid.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.RasterGrid.save" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.RasterGrid.save" title="Link to this definition">¶</a></dt>
 <dd><p>Save a RasterGrid to a .npz file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>)</p>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="urbanflow.RasterGrid.to_image">
-<span class="sig-name descname"><span class="pre">to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/RasterGrid.html#RasterGrid.to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.RasterGrid.to_image" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">palette</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.RasterGrid.to_image" title="Link to this definition">¶</a></dt>
 <dd><p>Convert a uint8 grid of states into a PIL Image.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>grid</strong> (<em>ndarray</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>]   </em><em>shape</em><em> (</em><em>rows</em><em>, </em><em>cols</em><em>)</em>) – Cell codes: 0=ocean, 1=street, 2=building (extend as you wish).</p></li>
-<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>default 1</em>) – How many output pixels per cell (must be ≥1). 2 doubles width/height.</p></li>
+<li><p><strong>grid</strong> (<em>ndarray</em><em>[</em><em>int</em><em>]   </em><em>shape</em><em> (</em><em>rows</em><em>, </em><em>cols</em><em>)</em>) – Cell codes: 0=ocean, 1=street, 2=building (extend as you wish).</p></li>
+<li><p><strong>scale</strong> (<em>int</em><em>, </em><em>default 1</em>) – How many output pixels per cell (must be ≥1). 2 doubles width/height.</p></li>
 <li><p><strong>palette</strong> (<em>{state:</em><em> (</em><em>R</em><em>, </em><em>G</em><em>, </em><em>B</em><em>)</em><em>}</em><em>, </em><em>optional</em>) – Custom colors.  Unspecified states default to white.</p></li>
 </ul>
 </dd>
@@ -510,7 +509,5 @@
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
-    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

@@ -9,7 +9,6 @@
         <title>urbanflow.utils.poi_utils - 15-Minute-Venice 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -275,26 +274,26 @@
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="urbanflow.utils.poi_utils.point_to_cell">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">point_to_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/utils/poi_utils.html#point_to_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.utils.poi_utils.point_to_cell" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">point_to_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.poi_utils.point_to_cell" title="Link to this definition">¶</a></dt>
 <dd><p>Convert a CRS-aligned point to (row, col).
 Raises ValueError if the point is outside the grid.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>)</p></li>
-<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>)</p></li>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>)</p></li>
+<li><p><strong>y</strong> (<em>float</em>)</p></li>
 <li><p><strong>transform</strong> (<em>Affine</em>)</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Tuple</em>[int, int]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="urbanflow.utils.poi_utils.pois_to_grid_coords">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">pois_to_grid_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poi_gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_adjusted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_outside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">street_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/utils/poi_utils.html#pois_to_grid_coords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.utils.poi_utils.pois_to_grid_coords" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">pois_to_grid_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poi_gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_adjusted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_outside</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">street_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">building_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.poi_utils.pois_to_grid_coords" title="Link to this definition">¶</a></dt>
 <dd><p>Map POI coordinates to grid indices AND snap them to the nearest
 ‘door cell’ (street cell adjacent to a building).</p>
 <dl class="field-list simple">
@@ -306,7 +305,7 @@ Raises ValueError if the point is outside the grid.</p>
 <li><p><strong>keep_outside</strong> (<em>bool          – keep/drop POIs that fall outside grid</em>)</p></li>
 <li><p><strong>street_code</strong> (int – codes used in <em>grid</em>)</p></li>
 <li><p><strong>building_code</strong> (int – codes used in <em>grid</em>)</p></li>
-<li><p><strong>do_adjusted</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a>)</p></li>
+<li><p><strong>do_adjusted</strong> (<em>bool</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -321,17 +320,17 @@ row_adj, col_adj  integer indices of the snapped door cell</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="urbanflow.utils.poi_utils.pois_within_radius">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">pois_within_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poi_gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poi_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'distance_m'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefer_same_parish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/utils/poi_utils.html#pois_within_radius"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.utils.poi_utils.pois_within_radius" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.poi_utils.</span></span><span class="sig-name descname"><span class="pre">pois_within_radius</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poi_gdf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poi_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_m</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'distance_m'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefer_same_parish</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.poi_utils.pois_within_radius" title="Link to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>poi_gdf</strong> (<em>GeoDataFrame</em>) – Full POI table (must have ‘geometry’, ‘PP_Bottega_METACATEGORY’,
 and optionally ‘parish_std’).</p></li>
-<li><p><strong>poi_idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – Row position of the central POI in <cite>poi_gdf</cite>.</p></li>
-<li><p><strong>meta_val</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Desired PP_Bottega_METACATEGORY value.</p></li>
-<li><p><strong>radius_m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><em>float</em></a>) – Search radius in metres.</p></li>
-<li><p><strong>distance_col</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em>, </em><em>optional</em>) – Column name that will store computed centre-to-POI distances.</p></li>
-<li><p><strong>prefer_same_parish</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, results from the same parish (<cite>parish_std</cite>) as the centre
+<li><p><strong>poi_idx</strong> (<em>int</em>) – Row position of the central POI in <cite>poi_gdf</cite>.</p></li>
+<li><p><strong>meta_val</strong> (<em>str</em>) – Desired PP_Bottega_METACATEGORY value.</p></li>
+<li><p><strong>radius_m</strong> (<em>float</em>) – Search radius in metres.</p></li>
+<li><p><strong>distance_col</strong> (<em>str</em><em>, </em><em>optional</em>) – Column name that will store computed centre-to-POI distances.</p></li>
+<li><p><strong>prefer_same_parish</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, results from the same parish (<cite>parish_std</cite>) as the centre
 POI are listed first (default False).</p></li>
 </ul>
 </dd>
@@ -421,7 +420,5 @@ and then by straight-line distance.</p>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
-    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

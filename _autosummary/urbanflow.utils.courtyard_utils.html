@@ -9,7 +9,6 @@
         <title>urbanflow.utils.courtyard_utils - 15-Minute-Venice 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -271,7 +270,7 @@
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="urbanflow.utils.courtyard_utils.add_auto_courtyards">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.courtyard_utils.</span></span><span class="sig-name descname"><span class="pre">add_auto_courtyards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">courtyard_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/utils/courtyard_utils.html#add_auto_courtyards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.utils.courtyard_utils.add_auto_courtyards" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.courtyard_utils.</span></span><span class="sig-name descname"><span class="pre">add_auto_courtyards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">empty_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">courtyard_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.courtyard_utils.add_auto_courtyards" title="Link to this definition">¶</a></dt>
 <dd><p>Automatically label enclosed empty cells as courtyards.</p>
 <p>Any cell in <code class="docutils literal notranslate"><span class="pre">grid</span></code> with value <code class="docutils literal notranslate"><span class="pre">empty_code</span></code> that is <em>not</em> 8-connected
 to the raster border is reclassified as <code class="docutils literal notranslate"><span class="pre">courtyard_code</span></code>. The operation
@@ -279,11 +278,11 @@ is performed in-place using fast morphological propagation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>grid</strong> (<em>ndarray</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a>) – 2D raster array representing land-use classes or categories.
+<li><p><strong>grid</strong> (<em>ndarray</em><em> of </em><em>int</em>) – 2D raster array representing land-use classes or categories.
 Modified in-place.</p></li>
-<li><p><strong>empty_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Value used to indicate empty cells, by default <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
-<li><p><strong>courtyard_code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Value used to indicate courtyard cells, by default <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
-<li><p><strong>structure</strong> (<em>ndarray</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><em>bool</em></a><em>, </em><em>optional</em>) – Structuring element defining connectivity for propagation.
+<li><p><strong>empty_code</strong> (<em>int</em><em>, </em><em>optional</em>) – Value used to indicate empty cells, by default <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p><strong>courtyard_code</strong> (<em>int</em><em>, </em><em>optional</em>) – Value used to indicate courtyard cells, by default <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
+<li><p><strong>structure</strong> (<em>ndarray</em><em> of </em><em>bool</em><em>, </em><em>optional</em>) – Structuring element defining connectivity for propagation.
 Defaults to a 3×3 matrix of ones (8-connectivity).</p></li>
 </ul>
 </dd>
@@ -291,7 +290,7 @@ Defaults to a 3×3 matrix of ones (8-connectivity).</p></li>
 <dd class="field-even"><p><strong>grid</strong> – Same array as input, with enclosed empty cells relabeled as courtyards.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray of <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)">int</a></p>
+<dd class="field-odd"><p>ndarray of int</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -392,7 +391,5 @@ Defaults to a 3×3 matrix of ones (8-connectivity).</p></li>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
-    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

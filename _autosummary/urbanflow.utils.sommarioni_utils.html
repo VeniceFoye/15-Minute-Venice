@@ -9,7 +9,6 @@
         <title>urbanflow.utils.sommarioni_utils - 15-Minute-Venice 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -271,7 +270,7 @@
 </div>
 <dl class="py function">
 <dt class="sig sig-object py" id="urbanflow.utils.sommarioni_utils.load_sommarioni_layers">
-<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.sommarioni_utils.</span></span><span class="sig-name descname"><span class="pre">load_sommarioni_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:32633'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/urbanflow/utils/sommarioni_utils.html#load_sommarioni_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#urbanflow.utils.sommarioni_utils.load_sommarioni_layers" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">urbanflow.utils.sommarioni_utils.</span></span><span class="sig-name descname"><span class="pre">load_sommarioni_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EPSG:32633'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#urbanflow.utils.sommarioni_utils.load_sommarioni_layers" title="Link to this definition">¶</a></dt>
 <dd><p>Load and split the 1808 Sommarioni cadaster dataset into thematic layers.</p>
 <p>Reads a GeoJSON or Feather file of cadaster geometries, filters them by
 <cite>geometry_type</cite>, and returns four separate GeoDataFrames:
@@ -280,22 +279,22 @@ to the target CRS.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a>) – Path to the cadaster file. May be GeoJSON (default) or Feather.</p></li>
-<li><p><strong>target_crs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><em>int</em></a><em>, </em><em>optional</em>) – Coordinate reference system to reproject the data into.
+<li><p><strong>path</strong> (<em>str</em>) – Path to the cadaster file. May be GeoJSON (default) or Feather.</p></li>
+<li><p><strong>target_crs</strong> (<em>str</em><em> or </em><em>int</em><em>, </em><em>optional</em>) – Coordinate reference system to reproject the data into.
 Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;EPSG:32633&quot;</span></code> (UTM zone 33N, meters).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoDataFrame</span></code></a>, <a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoDataFrame</span></code></a>, <a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoDataFrame</span></code></a>, <a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.html#geopandas.GeoDataFrame" title="(in GeoPandas v1.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeoDataFrame</span></code></a>]</span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><strong>buildings</strong> (<em>geopandas.GeoDataFrame</em>) – Polygons labeled as <code class="docutils literal notranslate"><span class="pre">&quot;building&quot;</span></code> in the input data.</p></li>
 <li><p><strong>streets</strong> (<em>geopandas.GeoDataFrame</em>) – Polygons labeled as <code class="docutils literal notranslate"><span class="pre">&quot;street&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;sottoportico&quot;</span></code>.</p></li>
 <li><p><strong>canals</strong> (<em>geopandas.GeoDataFrame</em>) – Polygons labeled as <code class="docutils literal notranslate"><span class="pre">&quot;water&quot;</span></code>.</p></li>
 <li><p><strong>courtyards</strong> (<em>geopandas.GeoDataFrame</em>) – Polygons labeled as <code class="docutils literal notranslate"><span class="pre">&quot;courtyard&quot;</span></code>.</p></li>
 </ul>
 </p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[<em>GeoDataFrame</em>, <em>GeoDataFrame</em>, <em>GeoDataFrame</em>, <em>GeoDataFrame</em>]</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -385,7 +384,5 @@ polygons for cleaner rasterization.</p></li>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
-    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>
