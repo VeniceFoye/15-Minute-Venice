@@ -42,10 +42,10 @@ def instantiate_grid_and_transform(
     - The origin of the transform is the upper-left corner.
     """
     # Find union bounds
-    min_x, max_x, min_y, max_y = _union_bounds(*gdfs)
+    min_x, min_y, max_x, max_y = _union_bounds(*gdfs)
 
     # Snap extent to whole cells
-    min_x, max_x, min_y, max_y = _snap_extent(cell_size, min_x, max_x, min_y, max_y)
+    min_x, min_y, max_x, max_y = _snap_extent(cell_size, min_x, min_y, max_x, max_y)
 
     # Find number of cols and rows
     cols = int((max_x - min_x) / cell_size)
@@ -62,35 +62,32 @@ def instantiate_grid_and_transform(
 
 def _union_bounds(*gdfs: gpd.GeoDataFrame) -> Tuple[float, float, float, float]:
     """
-    Snap bounding box coordinates to a multiple of the grid cell size.
-
-    Parameters
-    ----------
-    cell_size : float
-        Size of a grid cell in coordinate units.
-    min_x, max_x, min_y, max_y : float
-        Original bounding box coordinates.
-
-    Returns
-    -------
-    min_x, min_y, max_x, max_y : tuple of float
-        Adjusted bounding box coordinates aligned to the grid cell size.
-
-    Notes
-    -----
-    - The minimum bounds are floored to the nearest multiple of ``cell_size``.
-    Compute the union of the bounding boxes of one or more GeoDataFrames.
+    Compute the union of bounding boxes for one or more GeoDataFrames.
 
     Parameters
     ----------
     *gdfs : geopandas.GeoDataFrame
-        One or more GeoDataFrames whose bounds will be combined.
+        One or more GeoDataFrames whose bounds will be combined. `None` values
+        and empty frames are ignored.
 
     Returns
     -------
-    min_x, min_y, max_x, max_y : tuple of float
-        The minimum and maximum x and y coordinates of the unioned bounding box.
+    min_x, max_x, min_y, max_y : tuple of float
+        Unioned extent, returned as (min_x, max_x, min_y, max_y).
+        This ordering matches callers that expect x-extents first, then y-extents.
+
+    Raises
+    ------
+    ValueError
+        If no non-empty GeoDataFrames are provided.
+
+    Examples
+    --------
+    >>> ub = _union_bounds(gdf1, gdf2)
+    >>> ub
+    (0.0, 2.0, 0.0, 2.0)
     """
+
     min_x, min_y, max_x, max_y = gdfs[0].total_bounds
     for gdf in gdfs[1:]:
         x0, y0, x1, y1 = gdf.total_bounds
@@ -100,7 +97,7 @@ def _union_bounds(*gdfs: gpd.GeoDataFrame) -> Tuple[float, float, float, float]:
 
 
 def _snap_extent(
-    cell_size: float, min_x: float, max_x: float, min_y: float, max_y: float
+    cell_size: float, min_x: float,  min_y: float, max_x: float, max_y: float
 ):
     """
     Snap bounding box coordinates to a multiple of the grid cell size.
@@ -114,7 +111,7 @@ def _snap_extent(
 
     Returns
     -------
-    min_x, max_x, min_y, max_y : tuple of float
+    min_x, min_y, max_x, max_y : tuple of float
         Adjusted bounding box coordinates aligned to the grid cell size.
 
     Notes
@@ -127,7 +124,7 @@ def _snap_extent(
     max_x = math.ceil(max_x / cell_size) * cell_size
     max_y = math.ceil(max_y / cell_size) * cell_size
 
-    return min_x, max_x, min_y, max_y
+    return min_x, min_y, max_x, max_y
 
 
 def rasterize_geoms(

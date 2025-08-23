@@ -65,8 +65,8 @@ def test_grid_utils_functions():
     ub = _union_bounds(gdf1, gdf2)
     assert ub == (0.0, 0.0, 2.0, 2.0)
 
-    snap = _snap_extent(1, 0.2,1.7,0.3,1.9)
-    assert snap == (0,2,0,2)
+    snap = _snap_extent(1, 0.2,0.3,1.7,1.9)
+    assert snap == (0,0,2,2)
 
     rasterize_geoms([poly1], 3, grid, transform)
     assert grid[1,0] == 3
