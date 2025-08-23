@@ -1,0 +1,28 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PYTHON_VERSION: "3.11-slim"
+    image: urbanflow-dev:latest
+    container_name: urbanflow-dev
+    volumes:
+      - .:/workspace:delegated
+      - pip-cache:/root/.cache/pip
+    working_dir: /workspace
+    environment:
+      CMAKE_BUILD_PARALLEL_LEVEL: "4"
+      SKBUILD_CMAKE_ARGS: "-DCMAKE_BUILD_TYPE=Debug"
+
+    # keep container alive; open shell instead if you prefer
+    command: bash -lc "sleep infinity"
+
+    labels:
+      # VS Code Remote Containers will auto-open this path
+      devcontainer.metadata: |
+        {
+          "workspaceFolder": "/workspace"
+        }
+volumes:
+  pip-cache:

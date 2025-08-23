@@ -29,21 +29,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install cmake ninja
 
-      # If rasterio/scipy aren't in your pyproject deps yet, either add them there
-      # or keep this explicit install to ensure tests have what they need.
       - name: Install package and test deps (build C++ extension)
         env:
           CMAKE_BUILD_PARALLEL_LEVEL: "2"
           SKBUILD_CMAKE_ARGS: "-DCMAKE_BUILD_TYPE=Release"
         run: |
-          # Installs your package in editable mode and dev deps from pyproject
           pip install -e .[dev]
-          # If NOT already declared in [project].dependencies, uncomment:
-          # pip install rasterio scipy
 
       - name: Verify C++ extension import
         run: |
-          python - <<'PY'
+          python - <<'PY'cover
           try:
               import urbanflow.cpp.path_planner as m
               print("path_planner OK:", m.__file__)
