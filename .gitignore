@@ -17,3 +17,4 @@ settings.json
 *.gzip
 *.parquet*
 /docs/build/*
+build/*

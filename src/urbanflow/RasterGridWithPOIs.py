@@ -42,7 +42,7 @@ Typical usage
 
 from .RasterGrid import RasterGrid
 from .utils.poi_utils import pois_to_grid_coords
-from .cpp.path_planner import path_between_pois
+from urbanflow.cpp.path_planner import path_between_pois
 from typing import Dict, Tuple
 import numpy as np
 
